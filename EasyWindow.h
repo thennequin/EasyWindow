@@ -38,7 +38,7 @@ public:
 			}
 			virtual R					Call()
 			{
-				return m_pThis->*m_pMemberPtr();
+				return (m_pThis->*m_pMemberPtr)();
 			}
 			R(C::*m_pMemberPtr)();
 			C* m_pThis;
@@ -108,7 +108,7 @@ public:
 			}
 			virtual R					Call(T1 oT1)
 			{
-				return m_pThis->*m_pMemberPtr(oT1);
+				return (m_pThis->*m_pMemberPtr)(oT1);
 			}
 			R(C::*m_pMemberPtr)(T1);
 			C* m_pThis;
@@ -178,7 +178,7 @@ public:
 			}
 			virtual R					Call(T1 oT1, T2 oT2)
 			{
-				return m_pThis->*m_pMemberPtr(oT1, oT2);
+				return (m_pThis->*m_pMemberPtr)(oT1, oT2);
 			}
 			R(C::*m_pMemberPtr)(T1, T2);
 			C* m_pThis;
