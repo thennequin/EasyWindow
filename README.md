@@ -9,10 +9,17 @@ __!!!WARNING!!!__
 Only work on Windows actually (need an Linux and MacOS support) and not stable enough for production.
 
 ## How to use
-
-EasyWindow allow you to create a window in 2 lines
+Include files in you project:
+ * EasyWindow.h
+ * EasyWindow.h
+ * EasyWindowWin32.h
+ 
+ 
+EasyWindow allow you to create a window in 3 lines
 
 ``` c++
+#include "EasyWindow.h"
+
 EasyWindow* pMyWindow = EasyWindow::Create("My window", 640, 480);
 while (pMyWindow->Update());
 ```
@@ -35,6 +42,8 @@ Available events:
  ### Example
  
 ``` c++
+#include "EasyWindow.h"
+
 void MyOnSizeFunction(int iWidth, int iHeight)
 {
 	printf("%d x %d\n", iWidth, iHeight);
