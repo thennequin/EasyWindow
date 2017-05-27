@@ -61,7 +61,7 @@ public:
 		template<typename C>
 		void							Set(C* pThis, R(C::*pMemberPtr)())
 		{
-			if (0 != m_pCaller) delete m_pCall;
+			if (0 != m_pCaller) delete m_pCaller;
 			m_pCaller = new InstanceCall<C>(pThis, pMemberPtr);
 		}
 
@@ -131,7 +131,7 @@ public:
 		template<typename C>
 		void							Set(C* pThis, R(C::*pMemberPtr)(T1))
 		{
-			if (NULL != m_pCaller) delete m_pCall;
+			if (NULL != m_pCaller) delete m_pCaller;
 			m_pCaller = new InstanceCall<C>(pThis, pMemberPtr);
 		}
 
@@ -201,7 +201,7 @@ public:
 		template<typename C>
 		void							Set(C* pThis, R(C::*pMemberPtr)(T1, T2))
 		{
-			if (NULL != m_pCaller) delete m_pCall;
+			if (NULL != m_pCaller) delete m_pCaller;
 			m_pCaller = new InstanceCall<C>(pThis, pMemberPtr);
 		}
 
