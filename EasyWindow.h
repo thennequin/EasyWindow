@@ -347,6 +347,8 @@ public:
 	virtual int							GetClientHeight() = 0;
 	virtual int							GetPositionX() = 0;
 	virtual int							GetPositionY() = 0;
+	virtual int							GetClientPositionX() = 0;
+	virtual int							GetClientPositionY() = 0;
 	virtual bool						IsMaximized() = 0;
 	virtual bool						IsMinimized() = 0;
 

@@ -302,6 +302,22 @@ public:
 		return oRect.top;
 	}
 
+	virtual int						GetClientPositionX() EW_OVERRIDE
+	{
+		RECT oRectClient;
+		GetClientRect(m_pHandle, &oRectClient);
+		ClientToScreen(m_pHandle, reinterpret_cast<POINT*>(&oRectClient.left)); // convert top-left
+		return oRectClient.left;
+	}
+
+	virtual int						GetClientPositionY() EW_OVERRIDE
+	{
+		RECT oRectClient;
+		GetClientRect(m_pHandle, &oRectClient);
+		ClientToScreen(m_pHandle, reinterpret_cast<POINT*>(&oRectClient.left)); // convert top-left
+		return oRectClient.top;
+	}
+
 	virtual bool						IsMaximized() EW_OVERRIDE
 	{
 		return IsZoomed(m_pHandle);
