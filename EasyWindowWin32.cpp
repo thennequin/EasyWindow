@@ -486,14 +486,14 @@ protected:
 				if (wParam >= 0 && wParam < 256 && (HIWORD(lParam) & KF_REPEAT) == 0)
 				{
 					EKey eKey = (EKey)s_iTranslateKeys[wParam];
-					pThis->OnKeyboardButton(eKey, true);
+					pThis->OnKey(eKey, true);
 				}
 				break;
 			case WM_KEYUP:
 				if (wParam >= 0 && wParam < 256)
 				{
 					EKey eKey = (EKey)s_iTranslateKeys[wParam];
-					pThis->OnKeyboardButton(eKey, false);
+					pThis->OnKey(eKey, false);
 				}
 				break;
 			case WM_CHAR:
