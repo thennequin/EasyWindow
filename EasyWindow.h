@@ -335,8 +335,8 @@ public:
 
 	virtual void						SetSize(int iWidth, int iHeight, bool bClientSize) = 0;
 	virtual void						SetPosition(int iPosX, int iPosY) = 0;
-	virtual void						SetMaximize() = 0;
-	virtual void						SetMinimize() = 0;
+	virtual void						SetMaximized() = 0;
+	virtual void						SetMinimized() = 0;
 	virtual void						SetTitle(const char* pTitle) = 0;
 
 	virtual int							GetWidth() = 0;
