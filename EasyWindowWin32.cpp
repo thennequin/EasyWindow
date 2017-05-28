@@ -5,7 +5,7 @@
 
 #include <windows.h>
 
-#define QW_OVERRIDE override
+#define EW_OVERRIDE override
 
 class EasyWindowWin32 : public EasyWindow
 {
@@ -189,7 +189,7 @@ public:
 			DestroyWindow(m_pHandle);
 	}
 
-	virtual bool					Update() QW_OVERRIDE
+	virtual bool					Update() EW_OVERRIDE
 	{
 		MSG oMsg;
 		int iCount = 0;
@@ -208,12 +208,12 @@ public:
 	}
 
 
-	virtual void					Show(bool bShow) QW_OVERRIDE
+	virtual void					Show(bool bShow) EW_OVERRIDE
 	{
 		ShowWindow(m_pHandle, bShow ? SW_SHOW : SW_HIDE);
 	}
 
-	virtual void					SetSize(int iWidth, int iHeight, bool bClientSize) QW_OVERRIDE
+	virtual void					SetSize(int iWidth, int iHeight, bool bClientSize) EW_OVERRIDE
 	{
 		RECT oRect = { 0, 0, iWidth, iHeight };
 		if (bClientSize)
@@ -225,76 +225,76 @@ public:
 		SetWindowPos(m_pHandle, NULL, 0, 0, oRect.right - oRect.left, oRect.bottom - oRect.top, SWP_NOMOVE);
 	}
 
-	virtual void					SetPosition(int iPosX, int iPosY) QW_OVERRIDE
+	virtual void					SetPosition(int iPosX, int iPosY) EW_OVERRIDE
 	{
 		SetWindowPos(m_pHandle, NULL, iPosX, iPosY, 0, 0, SWP_NOSIZE);
 	}
 
-	virtual void					SetMaximize() QW_OVERRIDE
+	virtual void					SetMaximized() EW_OVERRIDE
 	{
 		ShowWindow(m_pHandle, SW_MAXIMIZE);
 	}
 
-	virtual void					SetMinimize() QW_OVERRIDE
+	virtual void					SetMinimized() EW_OVERRIDE
 	{
 		ShowWindow(m_pHandle, SW_MINIMIZE);
 	}
 
-	virtual void					SetTitle(const char* pTitle) QW_OVERRIDE
+	virtual void					SetTitle(const char* pTitle) EW_OVERRIDE
 	{
 		SetWindowText(m_pHandle, pTitle);
 	}
 
-	virtual int						GetWidth() QW_OVERRIDE
+	virtual int						GetWidth() EW_OVERRIDE
 	{
 		RECT oRect;
 		GetWindowRect(m_pHandle, &oRect);
 		return oRect.right - oRect.left;
 	}
-	virtual int						GetHeight() QW_OVERRIDE
+	virtual int						GetHeight() EW_OVERRIDE
 	{
 		RECT oRect;
 		GetWindowRect(m_pHandle, &oRect);
 		return oRect.bottom - oRect.top;
 	}
-	virtual int						GetClientWidth() QW_OVERRIDE
+	virtual int						GetClientWidth() EW_OVERRIDE
 	{
 		RECT oRect;
 		GetClientRect(m_pHandle, &oRect);
 		return oRect.right - oRect.left;
 	}
-	virtual int						GetClientHeight() QW_OVERRIDE
+	virtual int						GetClientHeight() EW_OVERRIDE
 	{
 		RECT oRect;
 		GetClientRect(m_pHandle, &oRect);
 		return oRect.bottom - oRect.top;
 	}
 
-	virtual int						GetPositionX() QW_OVERRIDE
+	virtual int						GetPositionX() EW_OVERRIDE
 	{
 		RECT oRect;
 		GetWindowRect(m_pHandle, &oRect);
 		return oRect.left;
 	}
 
-	virtual int						GetPositionY() QW_OVERRIDE
+	virtual int						GetPositionY() EW_OVERRIDE
 	{
 		RECT oRect;
 		GetWindowRect(m_pHandle, &oRect);
 		return oRect.top;
 	}
 
-	virtual bool						IsMaximized() QW_OVERRIDE
+	virtual bool						IsMaximized() EW_OVERRIDE
 	{
 		return IsZoomed(m_pHandle);
 	}
 
-	virtual bool						IsMinimized() QW_OVERRIDE
+	virtual bool						IsMinimized() EW_OVERRIDE
 	{
 		return IsIconic(m_pHandle);
 	}
 
-	virtual void*					GetHandle() QW_OVERRIDE
+	virtual void*					GetHandle() EW_OVERRIDE
 	{
 		return (void*)m_pHandle;
 	}
