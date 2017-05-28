@@ -352,6 +352,10 @@ public:
 	virtual bool						IsMaximized() = 0;
 	virtual bool						IsMinimized() = 0;
 
+	virtual bool						IsKeyCtrlDown() = 0;
+	virtual bool						IsKeyAltDown() = 0;
+	virtual bool						IsKeyShiftDown() = 0;
+
 	virtual void*						GetHandle() = 0;
 
 	/* int Width, int Height */

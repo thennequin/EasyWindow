@@ -328,6 +328,21 @@ public:
 		return IsIconic(m_pHandle);
 	}
 
+	virtual bool						IsKeyCtrlDown() EW_OVERRIDE
+	{
+		return (GetKeyState(VK_CONTROL) & 0x8000) != 0;
+	}
+
+	virtual bool						IsKeyAltDown() EW_OVERRIDE
+	{
+		return (GetKeyState(VK_MENU) & 0x8000) != 0;
+	}
+
+	virtual bool						IsKeyShiftDown()
+	{
+		return (GetKeyState(VK_SHIFT) & 0x8000) != 0;
+	}
+
 	virtual void*					GetHandle() EW_OVERRIDE
 	{
 		return (void*)m_pHandle;
