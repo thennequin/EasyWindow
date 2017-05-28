@@ -325,7 +325,7 @@ public:
 
 	static EasyWindow*					Create(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent = 0, EWindowStyle eStyle = E_NORMAL);
 	static const char*					KeyToString(EKey eKey);
-	static EKey							KeyToString(const char* pString);
+	static EKey							StringToKey(const char* pString);
 
 	virtual								~EasyWindow() {};
 		

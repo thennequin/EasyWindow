@@ -106,7 +106,7 @@ const char* EasyWindow::KeyToString(EKey eKey)
 	return c_pKeyTable[eKey];
 }
 
-EasyWindow::EKey EasyWindow::KeyToString(const char* pString)
+EasyWindow::EKey EasyWindow::StringToKey(const char* pString)
 {
 	if (pString == 0)
 		return KEY_NONE;
