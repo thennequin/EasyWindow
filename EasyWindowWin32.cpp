@@ -476,7 +476,7 @@ protected:
 				}
 				else
 				{
-					pThis->OnMouseMove(oCursorPos.x, oCursorPos.y);
+					pThis->OnMouseMove((signed short)(lParam), (signed short)(lParam >> 16));
 				}
 				break;
 			case WM_SYSKEYDOWN:
