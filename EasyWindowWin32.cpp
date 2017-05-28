@@ -240,6 +240,11 @@ public:
 		ShowWindow(m_pHandle, SW_MINIMIZE);
 	}
 
+	virtual void					SetRestored() EW_OVERRIDE
+	{
+		ShowWindow(m_pHandle, SW_RESTORE);
+	}
+
 	virtual void					SetTitle(const char* pTitle) EW_OVERRIDE
 	{
 		SetWindowText(m_pHandle, pTitle);
