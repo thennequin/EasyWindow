@@ -250,6 +250,19 @@ public:
 		SetWindowText(m_pHandle, pTitle);
 	}
 
+	virtual void					SetAlpha(unsigned char iAlpha) EW_OVERRIDE
+	{
+		if (iAlpha < 255)
+		{
+			SetWindowLong(m_pHandle, GWL_EXSTYLE, GetWindowLong(m_pHandle, GWL_EXSTYLE) | WS_EX_LAYERED);
+		}
+		else
+		{
+			SetWindowLong(m_pHandle, GWL_EXSTYLE, GetWindowLong(m_pHandle, GWL_EXSTYLE) & ~WS_EX_LAYERED);
+		}
+		SetLayeredWindowAttributes(m_pHandle, RGB(0, 0, 0), iAlpha, LWA_ALPHA);
+	}
+
 	virtual int						GetWidth() EW_OVERRIDE
 	{
 		RECT oRect;

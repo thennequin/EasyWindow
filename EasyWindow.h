@@ -339,6 +339,7 @@ public:
 	virtual void						SetMinimized() = 0;
 	virtual void						SetRestored() = 0;
 	virtual void						SetTitle(const char* pTitle) = 0;
+	virtual void						SetAlpha(unsigned char iAlpha) = 0;
 
 	virtual int							GetWidth() = 0;
 	virtual int							GetHeight() = 0;
