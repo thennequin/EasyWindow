@@ -31,7 +31,7 @@ int main()
 	pWindow->OnSize.Set(&OnSize);
 	pWindow->OnClose.Set(&OnClose);
 
-	pWindow->OnKeyboardButton.Set(&OnKey);
+	pWindow->OnKey.Set(&OnKey);
 	pWindow->OnChar.Set(&OnChar);
 	pWindow->Show();
 	
