@@ -148,7 +148,7 @@ public:
 			iWindowStyle |= CS_OWNDC;
 		}
 
-		m_bManualSizing = eStyle == E_BORDERLESS_RESIZABLE;
+		m_bManualSizing = eStyle == E_STYLE_BORDERLESS_RESIZABLE;
 
 		RECT wr = { 0, 0, iWidth, iHeight };
 		if (bClientSize)
