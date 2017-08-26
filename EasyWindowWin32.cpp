@@ -10,7 +10,7 @@
 class EasyWindowWin32 : public EasyWindow
 {
 public:
-	EasyWindowWin32(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent, EWindowStyle eStyle)
+	EasyWindowWin32(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent, EWindowStyle eStyle, EWindowFlags eFlags)
 		: m_bSizing(false)
 	{
 		if (!s_bClassInitialized)
@@ -141,6 +141,11 @@ public:
 		else if (eStyle == E_POPUP)
 		{
 			iWindowStyle = WS_POPUP;
+		}
+
+		if ((eFlags & E_FLAG_OWN_DC) != 0)
+		{
+			iWindowStyle |= CS_OWNDC;
 		}
 
 		m_bManualSizing = eStyle == E_BORDERLESS_RESIZABLE;
@@ -583,9 +588,9 @@ protected:
 bool EasyWindowWin32::s_bClassInitialized = false;
 EasyWindowWin32::EKey EasyWindowWin32::s_iTranslateKeys[256];
 
-EasyWindow* EasyWindow::Create(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent, EWindowStyle eStyle)
+EasyWindow* EasyWindow::Create(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent, EWindowStyle eStyle, EWindowFlags eFlags)
 {
-	return new EasyWindowWin32(pTitle, iWidth, iHeight, bClientSize, pParent, eStyle);
+	return new EasyWindowWin32(pTitle, iWidth, iHeight, bClientSize, pParent, eStyle, eFlags);
 }
 
 #endif //_WIN32 || _WIN64 || _MSC_VER

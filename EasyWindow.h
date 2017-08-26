@@ -323,7 +323,14 @@ public:
 		E_POPUP,
 	};
 
-	static EasyWindow*					Create(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent = 0, EWindowStyle eStyle = E_NORMAL);
+	enum EWindowFlag
+	{
+		E_FLAG_NONE		= 0,
+		E_FLAG_OWN_DC	= 1,
+	};
+	typedef int EWindowFlags;
+
+	static EasyWindow*					Create(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent = 0, EWindowStyle eStyle = E_STYLE_NORMAL, EWindowFlags eFlags = E_FLAG_NONE);
 	static const char*					KeyToString(EKey eKey);
 	static EKey							StringToKey(const char* pString);
 
