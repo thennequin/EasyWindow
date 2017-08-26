@@ -130,15 +130,15 @@ public:
 
 		DWORD iWindowStyle = WS_OVERLAPPEDWINDOW; // E_NORMAL
 		
-		if (eStyle == E_BORDERLESS)
+		if (eStyle == E_STYLE_BORDERLESS)
 		{
 			iWindowStyle = WS_POPUP | WS_SYSMENU;
 		}
-		else if (eStyle == E_BORDERLESS_RESIZABLE)
+		else if (eStyle == E_STYLE_BORDERLESS_RESIZABLE)
 		{
 			iWindowStyle = WS_POPUP | WS_SYSMENU | WS_SIZEBOX | WS_MAXIMIZEBOX | WS_MINIMIZEBOX;
 		}
-		else if (eStyle == E_POPUP)
+		else if (eStyle == E_STYLE_POPUP)
 		{
 			iWindowStyle = WS_POPUP;
 		}

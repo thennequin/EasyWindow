@@ -27,7 +27,7 @@ void OnKey(EasyWindow::EKey eKey, bool bDown)
 
 int main()
 {
-	EasyWindow* pWindow = EasyWindow::Create("Test", 640, 480, true, 0, EasyWindow::E_NORMAL);
+	EasyWindow* pWindow = EasyWindow::Create("Test", 640, 480, true, 0, EasyWindow::E_STYLE_NORMAL, EasyWindow::E_FLAG_OWN_DC);
 	pWindow->OnSize.Set(&OnSize);
 	pWindow->OnClose.Set(&OnClose);
 
