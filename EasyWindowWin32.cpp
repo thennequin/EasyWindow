@@ -325,12 +325,12 @@ public:
 
 	virtual bool						IsMaximized() EW_OVERRIDE
 	{
-		return IsZoomed(m_pHandle);
+		return IsZoomed(m_pHandle) == TRUE;
 	}
 
 	virtual bool						IsMinimized() EW_OVERRIDE
 	{
-		return IsIconic(m_pHandle);
+		return IsIconic(m_pHandle) == TRUE;
 	}
 
 	virtual bool						IsKeyCtrlDown() EW_OVERRIDE
