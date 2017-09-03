@@ -268,6 +268,37 @@ public:
 		SetLayeredWindowAttributes(m_pHandle, RGB(0, 0, 0), iAlpha, LWA_ALPHA);
 	}
 
+	virtual void					SetCursor(ECursorStyle eCursorStyle) EW_OVERRIDE
+	{
+		switch(eCursorStyle)
+		{
+		case E_CURSOR_DEFAULT:
+			::SetCursor(NULL);
+			break;
+		case E_CURSOR_ARROW:
+			::SetCursor(LoadCursor(NULL, IDC_ARROW));
+			break;
+		case E_CURSOR_TEXT_INPUT:         // When hovering over InputText, etc.
+			::SetCursor(LoadCursor(NULL, IDC_IBEAM));
+			break;
+		case E_CURSOR_HAND:              // Unused
+			::SetCursor(LoadCursor(NULL, IDC_HAND));
+			break;
+		case E_CURSOR_RESIZE_NS:          // Unused
+			::SetCursor(LoadCursor(NULL, IDC_SIZENS));
+			break;
+		case E_CURSOR_RESIZE_EW:          // When hovering over a column
+			::SetCursor(LoadCursor(NULL, IDC_SIZEWE));
+			break;
+		case E_CURSOR_RESIZE_NESW:        // Unused
+			::SetCursor(LoadCursor(NULL, IDC_SIZENESW));
+			break;
+		case E_CURSOR_RESIZE_NWSE:        // When hovering over the bottom-right corner of a window
+			::SetCursor(LoadCursor(NULL, IDC_SIZENWSE));
+			break;
+		}
+	}
+
 	virtual int						GetWidth() EW_OVERRIDE
 	{
 		RECT oRect;
@@ -577,6 +608,13 @@ protected:
 				{
 					ReleaseCapture();
 					pThis->m_bSizing = false;
+				}
+				break;
+			case WM_SETCURSOR:
+				if (LOWORD(lParam) == HTCLIENT) // Inside window
+				{
+					pThis->OnSetCursor();
+					return 1;
 				}
 				break;
 			}
