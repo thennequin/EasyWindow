@@ -36,6 +36,7 @@ Available events:
  * OnClose
  * OnMouseButton
  * OnMouseMove
+ * OnMouseWheel
  * OnKey
  * OnChar
  
