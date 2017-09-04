@@ -330,7 +330,7 @@ public:
 	};
 	typedef int EWindowFlags;
 
-	enum ECursorStyle
+	enum ECursor
 	{
 		E_CURSOR_NONE,
 		E_CURSOR_ARROW,
@@ -359,7 +359,7 @@ public:
 	virtual void						SetRestored() = 0;
 	virtual void						SetTitle(const char* pTitle) = 0;
 	virtual void						SetAlpha(unsigned char iAlpha) = 0;
-	virtual void						SetCursor(ECursorStyle eCursorStyle) = 0;
+	virtual void						SetCursor(ECursor eCursorStyle) = 0;
 
 	virtual int							GetWidth() = 0;
 	virtual int							GetHeight() = 0;
@@ -401,8 +401,6 @@ public:
 	CallbackTwoArg<EKey, bool, void>	OnKey;
 	/* int Char */
 	CallbackOneArg<int, void>			OnChar;
-
-	Callback<void>						OnSetCursor;
 };
 
 #endif //__EASY_WINDOW_H__

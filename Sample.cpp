@@ -34,6 +34,7 @@ int main()
 	pWindow->OnKey.Set(&OnKey);
 	pWindow->OnChar.Set(&OnChar);
 	pWindow->Show();
+	pWindow->SetCursor(EasyWindow::E_CURSOR_HAND);
 	
 	while (pWindow->Update());
 

@@ -12,6 +12,7 @@ class EasyWindowWin32 : public EasyWindow
 public:
 	EasyWindowWin32(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent, EWindowStyle eStyle, EWindowFlags eFlags)
 		: m_bSizing(false)
+		, m_eCursor(EasyWindow::E_CURSOR_ARROW)
 	{
 		if (!s_bClassInitialized)
 		{
@@ -268,35 +269,9 @@ public:
 		SetLayeredWindowAttributes(m_pHandle, RGB(0, 0, 0), iAlpha, LWA_ALPHA);
 	}
 
-	virtual void					SetCursor(ECursorStyle eCursorStyle) EW_OVERRIDE
+	virtual void					SetCursor(ECursor eCursor) EW_OVERRIDE
 	{
-		switch(eCursorStyle)
-		{
-		case E_CURSOR_NONE:
-			::SetCursor(NULL);
-			break;
-		case E_CURSOR_ARROW:
-			::SetCursor(LoadCursor(NULL, IDC_ARROW));
-			break;
-		case E_CURSOR_TEXT_INPUT:         // When hovering over InputText, etc.
-			::SetCursor(LoadCursor(NULL, IDC_IBEAM));
-			break;
-		case E_CURSOR_HAND:              // Unused
-			::SetCursor(LoadCursor(NULL, IDC_HAND));
-			break;
-		case E_CURSOR_RESIZE_NS:          // Unused
-			::SetCursor(LoadCursor(NULL, IDC_SIZENS));
-			break;
-		case E_CURSOR_RESIZE_EW:          // When hovering over a column
-			::SetCursor(LoadCursor(NULL, IDC_SIZEWE));
-			break;
-		case E_CURSOR_RESIZE_NESW:        // Unused
-			::SetCursor(LoadCursor(NULL, IDC_SIZENESW));
-			break;
-		case E_CURSOR_RESIZE_NWSE:        // When hovering over the bottom-right corner of a window
-			::SetCursor(LoadCursor(NULL, IDC_SIZENWSE));
-			break;
-		}
+		m_eCursor = eCursor;
 	}
 
 	virtual int						GetWidth() EW_OVERRIDE
@@ -389,6 +364,7 @@ protected:
 	RECT							m_oBorderThickness;
 	bool							m_bSizing;
 	LONG_PTR						m_iSizingMode;
+	ECursor							m_eCursor;
 
 	static bool						s_bClassInitialized;
 	static EKey						s_iTranslateKeys[256];
@@ -613,7 +589,33 @@ protected:
 			case WM_SETCURSOR:
 				if (LOWORD(lParam) == HTCLIENT) // Inside window
 				{
-					pThis->OnSetCursor();
+					switch (pThis->m_eCursor)
+					{
+					case E_CURSOR_NONE:
+						::SetCursor(NULL);
+						break;
+					case E_CURSOR_ARROW:
+						::SetCursor(LoadCursor(NULL, IDC_ARROW));
+						break;
+					case E_CURSOR_TEXT_INPUT:         // When hovering over InputText, etc.
+						::SetCursor(LoadCursor(NULL, IDC_IBEAM));
+						break;
+					case E_CURSOR_HAND:              // Unused
+						::SetCursor(LoadCursor(NULL, IDC_HAND));
+						break;
+					case E_CURSOR_RESIZE_NS:          // Unused
+						::SetCursor(LoadCursor(NULL, IDC_SIZENS));
+						break;
+					case E_CURSOR_RESIZE_EW:          // When hovering over a column
+						::SetCursor(LoadCursor(NULL, IDC_SIZEWE));
+						break;
+					case E_CURSOR_RESIZE_NESW:        // Unused
+						::SetCursor(LoadCursor(NULL, IDC_SIZENESW));
+						break;
+					case E_CURSOR_RESIZE_NWSE:        // When hovering over the bottom-right corner of a window
+						::SetCursor(LoadCursor(NULL, IDC_SIZENWSE));
+						break;
+					}
 					return 1;
 				}
 				break;
