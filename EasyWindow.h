@@ -330,6 +330,18 @@ public:
 	};
 	typedef int EWindowFlags;
 
+	enum ECursorStyle
+	{
+		E_CURSOR_NONE,
+		E_CURSOR_ARROW,
+		E_CURSOR_TEXT_INPUT,
+		E_CURSOR_HAND,
+		E_CURSOR_RESIZE_NS,
+		E_CURSOR_RESIZE_EW,
+		E_CURSOR_RESIZE_NESW,
+		E_CURSOR_RESIZE_NWSE
+	};
+
 	static EasyWindow*					Create(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent = 0, EWindowStyle eStyle = E_STYLE_NORMAL, EWindowFlags eFlags = E_FLAG_NONE);
 	static const char*					KeyToString(EKey eKey);
 	static EKey							StringToKey(const char* pString);
@@ -347,6 +359,7 @@ public:
 	virtual void						SetRestored() = 0;
 	virtual void						SetTitle(const char* pTitle) = 0;
 	virtual void						SetAlpha(unsigned char iAlpha) = 0;
+	virtual void						SetCursor(ECursorStyle eCursorStyle) = 0;
 
 	virtual int							GetWidth() = 0;
 	virtual int							GetHeight() = 0;
@@ -388,6 +401,8 @@ public:
 	CallbackTwoArg<EKey, bool, void>	OnKey;
 	/* int Char */
 	CallbackOneArg<int, void>			OnChar;
+
+	Callback<void>						OnSetCursor;
 };
 
 #endif //__EASY_WINDOW_H__
