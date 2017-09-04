@@ -272,7 +272,7 @@ public:
 	{
 		switch(eCursorStyle)
 		{
-		case E_CURSOR_DEFAULT:
+		case E_CURSOR_NONE:
 			::SetCursor(NULL);
 			break;
 		case E_CURSOR_ARROW:

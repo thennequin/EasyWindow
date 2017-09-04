@@ -332,7 +332,7 @@ public:
 
 	enum ECursorStyle
 	{
-		E_CURSOR_DEFAULT,
+		E_CURSOR_NONE,
 		E_CURSOR_ARROW,
 		E_CURSOR_TEXT_INPUT,
 		E_CURSOR_HAND,
