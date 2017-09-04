@@ -39,7 +39,6 @@ Available events:
  * OnMouseWheel
  * OnKey
  * OnChar
- * OnSetCursor
  
  ### Example
  
