@@ -9,7 +9,7 @@ solution "EasyWindow"
 
 	project "EasyWindowSample"
 		uuid				"f3501d7f-3f2d-476b-b9e2-d6c629e327da"
-		kind				"WindowedApp"
+		kind				"ConsoleApp"
 		targetdir			"../Output/"
 
 		files {
