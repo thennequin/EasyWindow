@@ -130,6 +130,7 @@ public:
 		}
 
 		DWORD iWindowStyle = WS_OVERLAPPEDWINDOW; // E_NORMAL
+		DWORD iWindowExStyle = 0;
 		
 		if (eStyle == E_STYLE_BORDERLESS)
 		{
@@ -149,6 +150,11 @@ public:
 			iWindowStyle |= CS_OWNDC;
 		}
 
+		if ((eFlags & E_FLAG_ACCEPT_FILES_DROP) != 0)
+		{
+			iWindowExStyle |= WS_EX_ACCEPTFILES;
+		}
+
 		m_bManualSizing = eStyle == E_STYLE_BORDERLESS_RESIZABLE;
 
 		RECT wr = { 0, 0, iWidth, iHeight };
@@ -158,7 +164,7 @@ public:
 		}
 
 		m_pHandle = CreateWindowEx(
-			NULL,
+			iWindowExStyle,
 			"EasyWindowWin32",
 			pTitle != NULL ? pTitle : "",
 			iWindowStyle,
@@ -619,6 +625,29 @@ protected:
 					return 1;
 				}
 				break;
+			case WM_DROPFILES:
+				{
+					HDROP hDrop = (HDROP)wParam;
+					
+					int iFileCount = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
+					char** pFiles = (char**)malloc(sizeof(char**) * iFileCount);
+					for (int i = 0; i < iFileCount; ++i)
+					{
+						pFiles[i] = (char*)malloc(sizeof(char) * MAX_PATH);
+						DragQueryFile(hDrop, i, pFiles[i], MAX_PATH);
+					}
+					DragFinish(hDrop);
+
+					pThis->OnFilesDrop(iFileCount, pFiles);
+
+					for (int i = 0; i < iFileCount; ++i)
+					{
+						free(pFiles[i]);
+					}
+					free(pFiles);
+
+					return 1;
+				}
 			}
 		}
 		return DefWindowProc(hWnd, iMsg, wParam, lParam);

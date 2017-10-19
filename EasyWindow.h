@@ -325,8 +325,9 @@ public:
 
 	enum EWindowFlag
 	{
-		E_FLAG_NONE		= 0,
-		E_FLAG_OWN_DC	= 1,
+		E_FLAG_NONE						= 0,
+		E_FLAG_OWN_DC					= 1,
+		E_FLAG_ACCEPT_FILES_DROP		= 2
 	};
 	typedef int EWindowFlags;
 
@@ -401,6 +402,9 @@ public:
 	CallbackTwoArg<EKey, bool, void>	OnKey;
 	/* int Char */
 	CallbackOneArg<int, void>			OnChar;
+
+	/* int FileCount, char** Files */
+	CallbackTwoArg<int, char**, void>	OnFilesDrop;
 };
 
 #endif //__EASY_WINDOW_H__
