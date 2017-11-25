@@ -237,9 +237,15 @@ public:
 		SetWindowPos(m_pHandle, NULL, 0, 0, oRect.right - oRect.left, oRect.bottom - oRect.top, SWP_NOMOVE);
 	}
 
-	virtual void					SetPosition(int iPosX, int iPosY) EW_OVERRIDE
+	virtual void					SetPosition(int iPosX, int iPosY, bool bClientPos) EW_OVERRIDE
 	{
-		SetWindowPos(m_pHandle, NULL, iPosX, iPosY, 0, 0, SWP_NOSIZE);
+		RECT oRect = { iPosX, iPosY, 0, 0 };
+		if (bClientPos)
+		{
+			DWORD iStyle = GetWindowLong(m_pHandle, GWL_STYLE);
+			AdjustWindowRect(&oRect, iStyle, FALSE);
+		}
+		SetWindowPos(m_pHandle, NULL, oRect.left, oRect.top, 0, 0, SWP_NOSIZE);
 	}
 
 	virtual void					SetMaximized() EW_OVERRIDE

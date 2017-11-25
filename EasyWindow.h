@@ -354,7 +354,7 @@ public:
 	virtual void						Show(bool bShow = true) = 0;
 
 	virtual void						SetSize(int iWidth, int iHeight, bool bClientSize) = 0;
-	virtual void						SetPosition(int iPosX, int iPosY) = 0;
+	virtual void						SetPosition(int iPosX, int iPosY, bool bClientPos) = 0;
 	virtual void						SetMaximized() = 0;
 	virtual void						SetMinimized() = 0;
 	virtual void						SetRestored() = 0;
