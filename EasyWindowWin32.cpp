@@ -393,8 +393,13 @@ protected:
 				return 1;
 				break;
 			case WM_PAINT:
-				return 1;
-				break;
+				{
+					PAINTSTRUCT	ps;
+					HDC hdc = BeginPaint( hWnd, &ps );
+					EndPaint( hWnd, &ps );
+					return 1;
+					break;
+				}
 			case WM_NCPAINT:
 				//return 0;
 				break;
