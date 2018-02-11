@@ -4,6 +4,8 @@
 class EasyWindow
 {
 public:
+	//Callbacks
+
 	template<typename R>
 	class Callback
 	{
@@ -262,6 +264,8 @@ public:
 		Caller*	m_pCaller;
 	};
 
+	// Enums and structs
+
 	enum EKey
 	{
 		KEY_NONE = 0,
@@ -403,9 +407,13 @@ public:
 		Point							oPosition;
 	};
 
+	// Static functions
+
 	static EasyWindow*					Create(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent = 0, EWindowStyle eStyle = E_STYLE_NORMAL, EWindowFlags eFlags = E_FLAG_NONE);
 	static const char*					KeyToString(EKey eKey);
 	static EKey							StringToKey(const char* pString);
+
+	// Members
 
 	virtual								~EasyWindow() {};
 		
@@ -438,6 +446,8 @@ public:
 	virtual bool						IsKeyShiftDown() = 0;
 
 	virtual void*						GetHandle() = 0;
+
+	// Events
 
 	/* int Width, int Height */
 	CallbackTwoArg<int, int, void>		OnSize;
