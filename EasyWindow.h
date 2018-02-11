@@ -80,21 +80,21 @@ public:
 		class Caller
 		{
 		public:
-			virtual R					Call(T1 oT1) = 0;
+			virtual R					Call(const T1& oT1) = 0;
 		};
 
 		class FunctionCall : public Caller
 		{
 		public:
-			FunctionCall(R(*pFunctionPtr)(T1))
+			FunctionCall(R(*pFunctionPtr)(const T1&))
 			{
 				m_pFunctionPtr = pFunctionPtr;
 			}
-			virtual R					Call(T1 oT1)
+			virtual R					Call(const T1& oT1)
 			{
 				return m_pFunctionPtr(oT1);
 			}
-			R(*m_pFunctionPtr)(T1);
+			R(*m_pFunctionPtr)(const T1&);
 		};
 
 		template<typename C>
@@ -106,7 +106,7 @@ public:
 				m_pThis = pThis;
 				m_pMemberPtr = pMemberPtr;
 			}
-			virtual R					Call(T1 oT1)
+			virtual R					Call(const T1& oT1)
 			{
 				return (m_pThis->*m_pMemberPtr)(oT1);
 			}
@@ -135,7 +135,7 @@ public:
 			m_pCaller = new InstanceCall<C>(pThis, pMemberPtr);
 		}
 
-		R								operator()(T1 oT1)
+		R								operator()(const T1& oT1)
 		{
 			if (0 != m_pCaller) return m_pCaller->Call(oT1);
 			return R();
@@ -150,7 +150,7 @@ public:
 		class Caller
 		{
 		public:
-			virtual R					Call(T1 oT1, T2 oT2) = 0;
+			virtual R					Call(const T1& oT1, const T2& oT2) = 0;
 		};
 
 		class FunctionCall : public Caller
@@ -160,7 +160,7 @@ public:
 			{
 				m_pFunctionPtr = pFunctionPtr;
 			}
-			virtual R					Call(T1 oT1, T2 oT2)
+			virtual R					Call(const T1& oT1, const T2& oT2)
 			{
 				return m_pFunctionPtr(oT1, oT2);
 			}
@@ -176,7 +176,7 @@ public:
 				m_pThis = pThis;
 				m_pMemberPtr = pMemberPtr;
 			}
-			virtual R					Call(T1 oT1, T2 oT2)
+			virtual R					Call(const T1& oT1, const T2& oT2)
 			{
 				return (m_pThis->*m_pMemberPtr)(oT1, oT2);
 			}
@@ -205,12 +205,11 @@ public:
 			m_pCaller = new InstanceCall<C>(pThis, pMemberPtr);
 		}
 
-		R								operator()(T1 oT1, T2 oT2)
+		R								operator()(const T1& oT1, const T2& oT2)
 		{
 			if (0 != m_pCaller) return m_pCaller->Call(oT1, oT2);
 			return R();
 		}
-
 	protected:
 		Caller*	m_pCaller;
 	};
