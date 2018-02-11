@@ -113,6 +113,23 @@ public:
 			R(C::*m_pMemberPtr)(T1);
 			C* m_pThis;
 		};
+
+		template<typename C>
+		class InstanceCallConstRef : public Caller
+		{
+		public:
+			InstanceCallConstRef(C* pThis, R(C::*pMemberPtr)(const T1&))
+			{
+				m_pThis = pThis;
+				m_pMemberPtr = pMemberPtr;
+			}
+			virtual R					Call(const T1& oT1)
+			{
+				return (m_pThis->*m_pMemberPtr)(oT1);
+			}
+			R(C::*m_pMemberPtr)(const T1&);
+			C* m_pThis;
+		};
 	public:
 		CallbackOneArg()
 		{
@@ -133,6 +150,13 @@ public:
 		{
 			if (NULL != m_pCaller) delete m_pCaller;
 			m_pCaller = new InstanceCall<C>(pThis, pMemberPtr);
+		}
+
+		template<typename C>
+		void							Set(C* pThis, R(C::*pMemberPtr)(const T1&))
+		{
+			if (NULL != m_pCaller) delete m_pCaller;
+			m_pCaller = new InstanceCallConstRef<C>(pThis, pMemberPtr);
 		}
 
 		R								operator()(const T1& oT1)
@@ -183,6 +207,23 @@ public:
 			R(C::*m_pMemberPtr)(T1, T2);
 			C* m_pThis;
 		};
+
+		template<typename C>
+		class InstanceCallConstRef : public Caller
+		{
+		public:
+			InstanceCallConstRef(C* pThis, R(C::*pMemberPtr)(T1, T2))
+			{
+				m_pThis = pThis;
+				m_pMemberPtr = pMemberPtr;
+			}
+			virtual R					Call(const T1& oT1, const T2& oT2)
+			{
+				return (m_pThis->*m_pMemberPtr)(oT1, oT2);
+			}
+			R(C::*m_pMemberPtr)(T1, T2);
+			C* m_pThis;
+		};
 	public:
 		CallbackTwoArg()
 		{
@@ -203,6 +244,13 @@ public:
 		{
 			if (NULL != m_pCaller) delete m_pCaller;
 			m_pCaller = new InstanceCall<C>(pThis, pMemberPtr);
+		}
+
+		template<typename C>
+		void							Set(C* pThis, R(C::*pMemberPtr)(const T1&, const T2&))
+		{
+			if (NULL != m_pCaller) delete m_pCaller;
+			m_pCaller = new InstanceCallConstRef<C>(pThis, pMemberPtr);
 		}
 
 		R								operator()(const T1& oT1, const T2& oT2)
