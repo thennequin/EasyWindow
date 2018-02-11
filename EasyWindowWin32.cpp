@@ -647,9 +647,19 @@ protected:
 						pFiles[i] = (char*)malloc(sizeof(char) * MAX_PATH);
 						DragQueryFile(hDrop, i, pFiles[i], MAX_PATH);
 					}
+
+					POINT oDropPoint;
+					DragQueryPoint(hDrop, &oDropPoint);
+
 					DragFinish(hDrop);
 
-					pThis->OnFilesDrop(iFileCount, pFiles);
+					DragFiles oFiles;
+					oFiles.iCount = iFileCount;
+					oFiles.pFiles = pFiles;
+					oFiles.oPosition.x = oDropPoint.x;
+					oFiles.oPosition.y = oDropPoint.y;
+
+					pThis->OnFilesDrop(oFiles);
 
 					for (int i = 0; i < iFileCount; ++i)
 					{

@@ -390,6 +390,19 @@ public:
 		E_CURSOR_RESIZE_NWSE
 	};
 
+	struct Point
+	{
+		int								x;
+		int								y;
+	};
+
+	struct DragFiles
+	{
+		int								iCount;
+		char**							pFiles;
+		Point							oPosition;
+	};
+
 	static EasyWindow*					Create(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent = 0, EWindowStyle eStyle = E_STYLE_NORMAL, EWindowFlags eFlags = E_FLAG_NONE);
 	static const char*					KeyToString(EKey eKey);
 	static EKey							StringToKey(const char* pString);
@@ -451,7 +464,7 @@ public:
 	CallbackOneArg<int, void>			OnChar;
 
 	/* int FileCount, char** Files */
-	CallbackTwoArg<int, char**, void>	OnFilesDrop;
+	CallbackOneArg<DragFiles, void>		OnFilesDrop;
 };
 
 #endif //__EASY_WINDOW_H__
