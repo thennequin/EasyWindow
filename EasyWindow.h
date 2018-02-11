@@ -400,7 +400,7 @@ public:
 		int								y;
 	};
 
-	struct DragFiles
+	struct DropFiles
 	{
 		int								iCount;
 		char**							pFiles;
@@ -474,7 +474,7 @@ public:
 	CallbackOneArg<int, void>			OnChar;
 
 	/* int FileCount, char** Files */
-	CallbackOneArg<DragFiles, void>		OnFilesDrop;
+	CallbackOneArg<DropFiles, void>		OnDropFiles;
 };
 
 #endif //__EASY_WINDOW_H__

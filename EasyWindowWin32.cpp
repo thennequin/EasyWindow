@@ -659,7 +659,7 @@ protected:
 					oFiles.oPosition.x = oDropPoint.x;
 					oFiles.oPosition.y = oDropPoint.y;
 
-					pThis->OnFilesDrop(oFiles);
+					pThis->OnDropFiles(oFiles);
 
 					for (int i = 0; i < iFileCount; ++i)
 					{
