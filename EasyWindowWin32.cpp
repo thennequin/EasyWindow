@@ -653,7 +653,7 @@ protected:
 
 					DragFinish(hDrop);
 
-					DragFiles oFiles;
+					DropFiles oFiles;
 					oFiles.iCount = iFileCount;
 					oFiles.pFiles = pFiles;
 					oFiles.oPosition.x = oDropPoint.x;
