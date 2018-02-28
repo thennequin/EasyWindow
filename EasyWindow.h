@@ -423,9 +423,8 @@ public:
 
 	virtual void						SetSize(int iWidth, int iHeight, bool bClientSize) = 0;
 	virtual void						SetPosition(int iPosX, int iPosY, bool bClientPos) = 0;
-	virtual void						SetMaximized() = 0;
-	virtual void						SetMinimized() = 0;
-	virtual void						SetRestored() = 0;
+	virtual void						SetMaximized(bool bMaximized) = 0;
+	virtual void						SetMinimized(bool bMinimized) = 0;
 	virtual void						SetTitle(const char* pTitle) = 0;
 	virtual void						SetAlpha(unsigned char iAlpha) = 0;
 	virtual void						SetCursor(ECursor eCursorStyle) = 0;

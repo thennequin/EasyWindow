@@ -248,19 +248,20 @@ public:
 		SetWindowPos(m_pHandle, NULL, oRect.left, oRect.top, 0, 0, SWP_NOSIZE);
 	}
 
-	virtual void					SetMaximized() EW_OVERRIDE
+	virtual void					SetMaximized(bool bMaximized) EW_OVERRIDE
 	{
-		ShowWindow(m_pHandle, SW_MAXIMIZE);
+		if (bMaximized)
+			ShowWindow(m_pHandle, SW_MAXIMIZE);
+		else
+			ShowWindow(m_pHandle, SW_RESTORE);
 	}
 
-	virtual void					SetMinimized() EW_OVERRIDE
+	virtual void					SetMinimized(bool bMinimized) EW_OVERRIDE
 	{
-		ShowWindow(m_pHandle, SW_MINIMIZE);
-	}
-
-	virtual void					SetRestored() EW_OVERRIDE
-	{
-		ShowWindow(m_pHandle, SW_RESTORE);
+		if (bMinimized)
+			ShowWindow(m_pHandle, SW_MINIMIZE);
+		else if(IsIconic(m_pHandle))
+			ShowWindow(m_pHandle, SW_RESTORE);
 	}
 
 	virtual void					SetTitle(const char* pTitle) EW_OVERRIDE
