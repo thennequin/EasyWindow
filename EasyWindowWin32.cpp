@@ -134,11 +134,11 @@ public:
 		
 		if (eStyle == E_STYLE_BORDERLESS)
 		{
-			iWindowStyle = WS_POPUP | WS_SYSMENU;
+			iWindowStyle = WS_OVERLAPPED | WS_SYSMENU;
 		}
 		else if (eStyle == E_STYLE_BORDERLESS_RESIZABLE)
 		{
-			iWindowStyle = WS_POPUP | WS_SYSMENU | WS_SIZEBOX | WS_MAXIMIZEBOX | WS_MINIMIZEBOX;
+			iWindowStyle = WS_OVERLAPPED | WS_SYSMENU | WS_SIZEBOX | WS_MAXIMIZEBOX | WS_MINIMIZEBOX;
 		}
 		else if (eStyle == E_STYLE_POPUP)
 		{
@@ -193,6 +193,8 @@ public:
 		}
 
 		SetWindowLongPtr(m_pHandle, GWLP_USERDATA, (LONG_PTR)this);
+
+		SetWindowPos(m_pHandle, NULL, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOSIZE | SWP_NOZORDER | SWP_NOMOVE | SWP_NOACTIVATE);
 	}
 
 	virtual							~EasyWindowWin32()
@@ -534,12 +536,16 @@ protected:
 				break;
 
 			case WM_NCCALCSIZE:
-				if (pThis->m_bManualSizing && lParam)
+				if (pThis->m_bManualSizing && wParam == TRUE && lParam != NULL)
 				{
-					//NCCALCSIZE_PARAMS* pSizeParams = (NCCALCSIZE_PARAMS*)lParam;
-					//pSizeParams->rgrc[0].left += pThis->m_oBorderThickness.left;
-					//pSizeParams->rgrc[0].right -= pThis->m_oBorderThickness.right;
-					//pSizeParams->rgrc[0].bottom -= pThis->m_oBorderThickness.bottom;
+					NCCALCSIZE_PARAMS* pSizeParams = (NCCALCSIZE_PARAMS*)lParam;
+					if (pSizeParams != NULL && IsZoomed(hWnd))
+					{
+						pSizeParams->rgrc[0].left += pThis->m_oBorderThickness.left;
+						pSizeParams->rgrc[0].top += pThis->m_oBorderThickness.top;
+						pSizeParams->rgrc[0].right -= pThis->m_oBorderThickness.right;
+						pSizeParams->rgrc[0].bottom -= pThis->m_oBorderThickness.bottom;
+					}
 					return 0;
 				}
 				break;
