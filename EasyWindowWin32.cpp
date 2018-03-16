@@ -244,7 +244,7 @@ public:
 		RECT oRect = { iPosX, iPosY, 0, 0 };
 		if (bClientPos)
 		{
-			POINT oPoint{0, 0};
+			POINT oPoint = { 0, 0 };
 			ClientToScreen( m_pHandle, &oPoint );
 
 			RECT oWinRect;
