@@ -289,59 +289,37 @@ public:
 		m_eCursor = eCursor;
 	}
 
-	virtual int						GetWidth() EW_OVERRIDE
+	virtual void					GetSize(int* iWidth, int* iHeight) EW_OVERRIDE
 	{
 		RECT oRect;
 		GetWindowRect(m_pHandle, &oRect);
-		return oRect.right - oRect.left;
+		*iWidth = (int)(oRect.right - oRect.left);
+		*iHeight = (int)(oRect.bottom - oRect.top);
 	}
-	virtual int						GetHeight() EW_OVERRIDE
-	{
-		RECT oRect;
-		GetWindowRect(m_pHandle, &oRect);
-		return oRect.bottom - oRect.top;
-	}
-	virtual int						GetClientWidth() EW_OVERRIDE
+
+	virtual void					GetClientSize(int* iWidth, int* iHeight) EW_OVERRIDE
 	{
 		RECT oRect;
 		GetClientRect(m_pHandle, &oRect);
-		return oRect.right - oRect.left;
-	}
-	virtual int						GetClientHeight() EW_OVERRIDE
-	{
-		RECT oRect;
-		GetClientRect(m_pHandle, &oRect);
-		return oRect.bottom - oRect.top;
+		*iWidth = (int)(oRect.right - oRect.left);
+		*iHeight = (int)(oRect.bottom - oRect.top);
 	}
 
-	virtual int						GetPositionX() EW_OVERRIDE
+	virtual void					GetPosition(int* iX, int* iY) EW_OVERRIDE
 	{
-		RECT oRect;
-		GetWindowRect(m_pHandle, &oRect);
-		return oRect.left;
+		RECT oRectClient;
+		GetWindowRect(m_pHandle, &oRectClient);
+		*iX = (int)oRectClient.left;
+		*iY = (int)oRectClient.top;
 	}
 
-	virtual int						GetPositionY() EW_OVERRIDE
-	{
-		RECT oRect;
-		GetWindowRect(m_pHandle, &oRect);
-		return oRect.top;
-	}
-
-	virtual int						GetClientPositionX() EW_OVERRIDE
+	virtual void					GetClientPosition(int* iX, int* iY) EW_OVERRIDE
 	{
 		RECT oRectClient;
 		GetClientRect(m_pHandle, &oRectClient);
 		ClientToScreen(m_pHandle, reinterpret_cast<POINT*>(&oRectClient.left)); // convert top-left
-		return oRectClient.left;
-	}
-
-	virtual int						GetClientPositionY() EW_OVERRIDE
-	{
-		RECT oRectClient;
-		GetClientRect(m_pHandle, &oRectClient);
-		ClientToScreen(m_pHandle, reinterpret_cast<POINT*>(&oRectClient.left)); // convert top-left
-		return oRectClient.top;
+		*iX = (int)oRectClient.left;
+		*iY = (int)oRectClient.top;
 	}
 
 	virtual bool						IsMaximized() EW_OVERRIDE

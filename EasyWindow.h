@@ -429,14 +429,10 @@ public:
 	virtual void						SetAlpha(unsigned char iAlpha) = 0;
 	virtual void						SetCursor(ECursor eCursorStyle) = 0;
 
-	virtual int							GetWidth() = 0;
-	virtual int							GetHeight() = 0;
-	virtual int							GetClientWidth() = 0;
-	virtual int							GetClientHeight() = 0;
-	virtual int							GetPositionX() = 0;
-	virtual int							GetPositionY() = 0;
-	virtual int							GetClientPositionX() = 0;
-	virtual int							GetClientPositionY() = 0;
+	virtual void						GetSize(int* iWidth, int* iHeight) = 0;
+	virtual void						GetClientSize(int* iWidth, int* iHeight) = 0;
+	virtual void						GetPosition(int* iX, int* iY) = 0;
+	virtual void						GetClientPosition(int* iX, int* iY) = 0;
 	virtual bool						IsMaximized() = 0;
 	virtual bool						IsMinimized() = 0;
 
