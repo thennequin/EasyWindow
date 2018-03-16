@@ -244,8 +244,14 @@ public:
 		RECT oRect = { iPosX, iPosY, 0, 0 };
 		if (bClientPos)
 		{
-			DWORD iStyle = GetWindowLong(m_pHandle, GWL_STYLE);
-			AdjustWindowRect(&oRect, iStyle, FALSE);
+			POINT oPoint{0, 0};
+			ClientToScreen( m_pHandle, &oPoint );
+
+			RECT oWinRect;
+			GetWindowRect(m_pHandle, &oWinRect);
+
+			oRect.left += oPoint.x - oWinRect.left;
+			oRect.top += oPoint.y - oWinRect.top;
 		}
 		SetWindowPos(m_pHandle, NULL, oRect.left, oRect.top, 0, 0, SWP_NOSIZE);
 	}
