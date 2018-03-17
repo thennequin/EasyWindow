@@ -295,7 +295,7 @@ public:
 		m_eCursor = eCursor;
 	}
 
-	virtual void					GetSize(int* iWidth, int* iHeight) EW_OVERRIDE
+	virtual void					GetSize(int* iWidth, int* iHeight) const EW_OVERRIDE
 	{
 		RECT oRect;
 		GetWindowRect(m_pHandle, &oRect);
@@ -303,7 +303,7 @@ public:
 		*iHeight = (int)(oRect.bottom - oRect.top);
 	}
 
-	virtual void					GetClientSize(int* iWidth, int* iHeight) EW_OVERRIDE
+	virtual void					GetClientSize(int* iWidth, int* iHeight) const EW_OVERRIDE
 	{
 		RECT oRect;
 		GetClientRect(m_pHandle, &oRect);
@@ -311,7 +311,7 @@ public:
 		*iHeight = (int)(oRect.bottom - oRect.top);
 	}
 
-	virtual void					GetPosition(int* iX, int* iY) EW_OVERRIDE
+	virtual void					GetPosition(int* iX, int* iY) const EW_OVERRIDE
 	{
 		RECT oRectClient;
 		GetWindowRect(m_pHandle, &oRectClient);
@@ -319,7 +319,7 @@ public:
 		*iY = (int)oRectClient.top;
 	}
 
-	virtual void					GetClientPosition(int* iX, int* iY) EW_OVERRIDE
+	virtual void					GetClientPosition(int* iX, int* iY) const EW_OVERRIDE
 	{
 		RECT oRectClient;
 		GetClientRect(m_pHandle, &oRectClient);
@@ -328,12 +328,12 @@ public:
 		*iY = (int)oRectClient.top;
 	}
 
-	virtual bool						IsMaximized() EW_OVERRIDE
+	virtual bool						IsMaximized() const EW_OVERRIDE
 	{
 		return IsZoomed(m_pHandle) == TRUE;
 	}
 
-	virtual bool						IsMinimized() EW_OVERRIDE
+	virtual bool						IsMinimized() const EW_OVERRIDE
 	{
 		return IsIconic(m_pHandle) == TRUE;
 	}

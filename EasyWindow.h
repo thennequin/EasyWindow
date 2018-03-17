@@ -431,12 +431,12 @@ public:
 	virtual void						SetAlpha(unsigned char iAlpha) = 0;
 	virtual void						SetCursor(ECursor eCursorStyle) = 0;
 
-	virtual void						GetSize(int* iWidth, int* iHeight) = 0;
-	virtual void						GetClientSize(int* iWidth, int* iHeight) = 0;
-	virtual void						GetPosition(int* iX, int* iY) = 0;
-	virtual void						GetClientPosition(int* iX, int* iY) = 0;
-	virtual bool						IsMaximized() = 0;
-	virtual bool						IsMinimized() = 0;
+	virtual void						GetSize(int* iWidth, int* iHeight) const = 0;
+	virtual void						GetClientSize(int* iWidth, int* iHeight) const = 0;
+	virtual void						GetPosition(int* iX, int* iY) const = 0;
+	virtual void						GetClientPosition(int* iX, int* iY) const = 0;
+	virtual bool						IsMaximized() const = 0;
+	virtual bool						IsMinimized() const = 0;
 
 	virtual bool						IsKeyCtrlDown() = 0;
 	virtual bool						IsKeyAltDown() = 0;
