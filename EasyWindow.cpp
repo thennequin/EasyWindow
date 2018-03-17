@@ -119,3 +119,33 @@ EasyWindow::EKey EasyWindow::StringToKey(const char* pString)
 
 	return KEY_NONE;
 }
+
+bool EasyWindow::IsModifierKey(EKey eKey)
+{
+	return eKey >= KEY_LEFTALT && eKey <= KEY_RIGHTMETA;
+}
+
+EasyWindow::EKey EasyWindow::GetAlternativeKey(EKey eKey)
+{
+	switch (eKey)
+	{
+	case KEY_LEFTALT:
+		return KEY_RIGHTALT;
+	case KEY_RIGHTALT:
+		return KEY_LEFTALT;
+	case KEY_LEFTCTRL:
+		return KEY_RIGHTCTRL;
+	case KEY_RIGHTCTRL:
+		return KEY_LEFTCTRL;
+	case KEY_LEFTSHIFT:
+		return KEY_RIGHTSHIFT;
+	case KEY_RIGHTSHIFT:
+		return KEY_LEFTSHIFT;
+	case KEY_LEFTMETA:
+		return KEY_RIGHTMETA;
+	case KEY_RIGHTMETA:
+		return KEY_LEFTMETA;
+	default:
+		return KEY_NONE;
+	}
+}

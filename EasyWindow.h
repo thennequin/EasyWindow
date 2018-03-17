@@ -412,6 +412,8 @@ public:
 	static EasyWindow*					Create(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent = 0, EWindowStyle eStyle = E_STYLE_NORMAL, EWindowFlags eFlags = E_FLAG_NONE);
 	static const char*					KeyToString(EKey eKey);
 	static EKey							StringToKey(const char* pString);
+	static bool							IsModifierKey(EKey eKey);
+	static EKey							GetAlternativeKey(EKey eKey);
 
 	// Members
 
