@@ -407,10 +407,8 @@ protected:
 				pThis->OnMove(LOWORD(lParam), HIWORD(lParam));
 				break;
 			case WM_SETFOCUS:
-				pThis->OnFocus(true);
-				break;
 			case WM_KILLFOCUS:
-				pThis->OnFocus(false);
+				pThis->OnFocus(pThis->IsFocused());
 				break;
 			case WM_CLOSE:
 				if (pThis->OnClose())
