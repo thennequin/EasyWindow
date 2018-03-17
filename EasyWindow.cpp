@@ -2,6 +2,8 @@
 
 #include <string.h>
 
+#include <ctype.h>      // toupper
+
 const char* const c_pKeyTable[] = {
 	0,
 	"Esc",
@@ -106,6 +108,13 @@ const char* EasyWindow::KeyToString(EKey eKey)
 	return c_pKeyTable[eKey];
 }
 
+int _EasyWindowStricmp(const char* str1, const char* str2)
+{
+	int d;
+	while ((d = ::toupper(*str2) - ::toupper(*str1)) == 0 && *str1) { str1++; str2++; }
+	return d;
+}
+
 EasyWindow::EKey EasyWindow::StringToKey(const char* pString)
 {
 	if (pString == 0)
@@ -113,7 +122,7 @@ EasyWindow::EKey EasyWindow::StringToKey(const char* pString)
 
 	for (int i = 1; i < sizeof(c_pKeyTable); ++i)
 	{
-		if (strcmp(pString, c_pKeyTable[i]) == 0)
+		if (_EasyWindowStricmp(pString, c_pKeyTable[i]) == 0)
 			return (EasyWindow::EKey)i;
 	}
 
