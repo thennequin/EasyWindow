@@ -227,6 +227,16 @@ public:
 		ShowWindow(m_pHandle, bShow ? SW_SHOW : SW_HIDE);
 	}
 
+	virtual bool					IsFocused() const EW_OVERRIDE
+	{
+		return GetForegroundWindow() == m_pHandle;
+	}
+
+	virtual void					SetFocused() EW_OVERRIDE
+	{
+		SetForegroundWindow(m_pHandle);
+	}
+
 	virtual void					SetSize(int iWidth, int iHeight, bool bClientSize) EW_OVERRIDE
 	{
 		RECT oRect = { 0, 0, iWidth, iHeight };

@@ -422,6 +422,9 @@ public:
 	virtual bool						Update() = 0;
 
 	virtual void						Show(bool bShow = true) = 0;
+	
+	virtual bool						IsFocused() const = 0;
+	virtual void						SetFocused() = 0;
 
 	virtual void						SetSize(int iWidth, int iHeight, bool bClientSize) = 0;
 	virtual void						SetPosition(int iPosX, int iPosY, bool bClientPos) = 0;
