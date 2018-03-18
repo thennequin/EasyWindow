@@ -9,6 +9,7 @@
 
 class EasyWindowWin32 : public EasyWindow
 {
+	const char* const c_pClassName = "EasyWindowWin32";
 public:
 	EasyWindowWin32(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent, EWindowStyle eStyle, EWindowFlags eFlags)
 		: m_bSizing(false)
@@ -29,7 +30,7 @@ public:
 			wc.hInstance = GetModuleHandle(NULL);
 			wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 			wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-			wc.lpszClassName = "EasyWindowWin32";
+			wc.lpszClassName = c_pClassName;
 			RegisterClassEx(&wc);
 
 			for (int i = 0; i < 256; ++i)
