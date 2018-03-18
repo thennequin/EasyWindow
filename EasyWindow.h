@@ -362,8 +362,9 @@ public:
 	enum EWindowFlag
 	{
 		E_FLAG_NONE						= 0,
-		E_FLAG_OWN_DC					= 1,
-		E_FLAG_ACCEPT_FILES_DROP		= 2
+		E_FLAG_OWN_DC					= (1<<0),
+		E_FLAG_ACCEPT_FILES_DROP		= (1<<1),
+		E_FLAG_CATCH_ALT_KEY			= (1<<2),
 	};
 	typedef int EWindowFlags;
 

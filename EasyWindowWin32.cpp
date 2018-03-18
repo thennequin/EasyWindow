@@ -13,6 +13,9 @@ public:
 	EasyWindowWin32(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent, EWindowStyle eStyle, EWindowFlags eFlags)
 		: m_bSizing(false)
 		, m_eCursor(EasyWindow::E_CURSOR_ARROW)
+		, m_bKeyDownAlt{ false, false }
+		, m_bKeyDownCtrl{ false, false }
+		, m_bKeyDownShift{ false, false }
 	{
 		if (!s_bClassInitialized)
 		{
@@ -156,6 +159,8 @@ public:
 		}
 
 		m_bManualSizing = eStyle == E_STYLE_BORDERLESS_RESIZABLE;
+
+		m_bCatchAlt = (eFlags & E_FLAG_CATCH_ALT_KEY) != 0;
 
 		RECT wr = { 0, 0, iWidth, iHeight };
 		if (bClientSize)
@@ -374,6 +379,10 @@ protected:
 	bool							m_bSizing;
 	LONG_PTR						m_iSizingMode;
 	ECursor							m_eCursor;
+	bool							m_bCatchAlt;
+	bool							m_bKeyDownAlt[2];
+	bool							m_bKeyDownCtrl[2];
+	bool							m_bKeyDownShift[2];
 
 	static bool						s_bClassInitialized;
 	static EKey						s_iTranslateKeys[256];
@@ -508,21 +517,62 @@ protected:
 				break;
 			case WM_SYSKEYDOWN:
 			case WM_SYSKEYUP:
-				return 1;
+				if (pThis->m_bCatchAlt == false)
+					break;
 			case WM_KEYDOWN:
-				if (wParam >= 0 && wParam < 256 && (HIWORD(lParam) & KF_REPEAT) == 0)
-				{
-					EKey eKey = (EKey)s_iTranslateKeys[wParam];
-					pThis->OnKey(eKey, true);
-				}
-				break;
 			case WM_KEYUP:
-				if (wParam >= 0 && wParam < 256)
+			{
+				bool bDown = (iMsg == WM_SYSKEYDOWN) || (iMsg == WM_KEYDOWN);
+				if (wParam >= 0 && wParam < c_iMaxKeys && (bDown == false || (HIWORD(lParam) & KF_REPEAT) == 0))
 				{
 					EKey eKey = (EKey)s_iTranslateKeys[wParam];
-					pThis->OnKey(eKey, false);
+
+					if (wParam == VK_SHIFT)
+					{
+						if (bDown && pThis->m_bKeyDownShift[0] != bDown && pThis->m_bKeyDownShift[1] != bDown)
+							pThis->OnKey(KEY_SHIFT, bDown);
+
+						UINT iScancode = (lParam & 0x00ff0000) >> 16;
+						UINT iNewVK = MapVirtualKey(iScancode, MAPVK_VSC_TO_VK_EX);
+						eKey = (EKey)s_iTranslateKeys[iNewVK];
+
+						pThis->m_bKeyDownShift[(int)(eKey == KEY_RIGHTSHIFT)] = bDown;
+
+						if (!bDown && pThis->m_bKeyDownShift[0] == bDown && pThis->m_bKeyDownShift[1] == bDown)
+							pThis->OnKey(KEY_SHIFT, bDown);
+					}
+					else if (wParam == VK_CONTROL)
+					{
+						if (bDown && pThis->m_bKeyDownCtrl[0] != bDown && pThis->m_bKeyDownCtrl[1] != bDown)
+							pThis->OnKey(KEY_CTRL, bDown);
+
+						bool bExtended = (HIWORD(lParam) & KF_EXTENDED) != 0;
+						eKey = bExtended ? KEY_RIGHTCTRL : KEY_LEFTCTRL;
+
+						pThis->m_bKeyDownCtrl[(int)(eKey == KEY_RIGHTCTRL)] = bDown;
+
+						if (!bDown && pThis->m_bKeyDownCtrl[0] == bDown && pThis->m_bKeyDownCtrl[1] == bDown)
+							pThis->OnKey(KEY_CTRL, bDown);
+					}
+					else if (wParam == VK_MENU)
+					{
+						if (bDown && pThis->m_bKeyDownAlt[0] != bDown && pThis->m_bKeyDownAlt[1] != bDown)
+							pThis->OnKey(KEY_ALT, bDown);
+
+						bool bExtended = (HIWORD(lParam) & KF_EXTENDED) != 0;
+						eKey = bExtended ? KEY_RIGHTALT : KEY_LEFTALT;
+
+						pThis->m_bKeyDownAlt[(int)(eKey == KEY_RIGHTALT)] = bDown;
+
+						if (!bDown && pThis->m_bKeyDownAlt[0] == bDown && pThis->m_bKeyDownAlt[1] == bDown)
+							pThis->OnKey(KEY_ALT, bDown);
+					}
+
+					pThis->OnKey(eKey, bDown);
 				}
+				return 1;
 				break;
+			}
 			case WM_CHAR:
 				pThis->OnChar(wParam);
 				break;
