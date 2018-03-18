@@ -33,7 +33,7 @@ public:
 			wc.lpszClassName = c_pClassName;
 			RegisterClassEx(&wc);
 
-			for (int i = 0; i < 256; ++i)
+			for (int i = 0; i < c_iMaxKeys; ++i)
 				s_iTranslateKeys[i] = KEY_NONE;
 
 			s_iTranslateKeys[VK_ESCAPE]     = EKey::KEY_ESC;
@@ -386,7 +386,8 @@ protected:
 	bool							m_bKeyDownShift[2];
 
 	static bool						s_bClassInitialized;
-	static EKey						s_iTranslateKeys[256];
+	static const int				c_iMaxKeys = 256;
+	static EKey						s_iTranslateKeys[c_iMaxKeys];
 
 	static LRESULT					CALLBACK Proc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	{
@@ -726,7 +727,7 @@ protected:
 };
 
 bool EasyWindowWin32::s_bClassInitialized = false;
-EasyWindowWin32::EKey EasyWindowWin32::s_iTranslateKeys[256];
+EasyWindowWin32::EKey EasyWindowWin32::s_iTranslateKeys[c_iMaxKeys];
 
 EasyWindow* EasyWindow::Create(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent, EWindowStyle eStyle, EWindowFlags eFlags)
 {
