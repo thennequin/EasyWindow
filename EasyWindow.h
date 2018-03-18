@@ -356,12 +356,16 @@ public:
 		KEY_Z,
 
 		// Modifiers
+		KEY_ALT,
 		KEY_LEFTALT,
 		KEY_RIGHTALT,
+		KEY_CTRL,
 		KEY_LEFTCTRL,
 		KEY_RIGHTCTRL,
+		KEY_SHIFT,
 		KEY_LEFTSHIFT,
 		KEY_RIGHTSHIFT,
+		KEY_META,
 		KEY_LEFTMETA,
 		KEY_RIGHTMETA,
 	};
@@ -413,7 +417,8 @@ public:
 	static const char*					KeyToString(EKey eKey);
 	static EKey							StringToKey(const char* pString);
 	static bool							IsModifierKey(EKey eKey);
-	static EKey							GetAlternativeKey(EKey eKey);
+	static bool							GetExtendedKeys(EKey eKey, EKey* pOutKey1, EKey* pOutKey2);
+	static EKey							GetOriginalKey(EKey eKey);
 
 	// Members
 

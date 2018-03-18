@@ -93,12 +93,16 @@ const char* const c_pKeyTable[] = {
 	"Z",
 
 	// Modifiers
+	"Alt",
 	"LeftAlt",
 	"RightAlt",
+	"Ctrl",
 	"LeftCtrl",
 	"RightCtrl",
+	"Shift",
 	"LeftShift",
 	"RightShift",
+	"Meta",
 	"LeftMeta",
 	"RightMeta"
 };
@@ -131,29 +135,52 @@ EasyWindow::EKey EasyWindow::StringToKey(const char* pString)
 
 bool EasyWindow::IsModifierKey(EKey eKey)
 {
-	return eKey >= KEY_LEFTALT && eKey <= KEY_RIGHTMETA;
+	return eKey >= KEY_ALT && eKey <= KEY_RIGHTMETA;
 }
 
-EasyWindow::EKey EasyWindow::GetAlternativeKey(EKey eKey)
+bool EasyWindow::GetExtendedKeys(EKey eKey, EKey* pOutKey1, EKey* pOutKey2)
+{
+	switch (eKey)
+	{
+	case KEY_ALT:
+		if (pOutKey1 != NULL) *pOutKey1 = KEY_LEFTALT;
+		if (pOutKey2 != NULL) *pOutKey2 = KEY_RIGHTALT;
+		return true;
+	case KEY_CTRL:
+		if (pOutKey1 != NULL) *pOutKey1 = KEY_LEFTCTRL;
+		if (pOutKey2 != NULL) *pOutKey2 = KEY_RIGHTCTRL;
+		return true;
+	case KEY_SHIFT:
+		if (pOutKey1 != NULL) *pOutKey1 = KEY_LEFTSHIFT;
+		if (pOutKey2 != NULL) *pOutKey2 = KEY_RIGHTSHIFT;
+		return true;
+	case KEY_META:
+		if (pOutKey1 != NULL) *pOutKey1 = KEY_LEFTMETA;
+		if (pOutKey2 != NULL) *pOutKey2 = KEY_RIGHTMETA;
+		return true;
+	default:
+		if (pOutKey1 != NULL) *pOutKey1 = KEY_NONE;
+		if (pOutKey2 != NULL) *pOutKey2 = KEY_NONE;
+		return false;
+	}
+}
+
+EasyWindow::EKey EasyWindow::GetOriginalKey(EKey eKey)
 {
 	switch (eKey)
 	{
 	case KEY_LEFTALT:
-		return KEY_RIGHTALT;
 	case KEY_RIGHTALT:
-		return KEY_LEFTALT;
+		return KEY_ALT;
 	case KEY_LEFTCTRL:
-		return KEY_RIGHTCTRL;
 	case KEY_RIGHTCTRL:
-		return KEY_LEFTCTRL;
+		return KEY_CTRL;
 	case KEY_LEFTSHIFT:
-		return KEY_RIGHTSHIFT;
 	case KEY_RIGHTSHIFT:
-		return KEY_LEFTSHIFT;
+		return KEY_SHIFT;
 	case KEY_LEFTMETA:
-		return KEY_RIGHTMETA;
 	case KEY_RIGHTMETA:
-		return KEY_LEFTMETA;
+		return KEY_META;
 	default:
 		return KEY_NONE;
 	}
