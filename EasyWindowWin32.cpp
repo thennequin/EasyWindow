@@ -402,7 +402,7 @@ protected:
 			case WM_PAINT:
 				{
 					PAINTSTRUCT	ps;
-					HDC hdc = BeginPaint( hWnd, &ps );
+					BeginPaint( hWnd, &ps );
 					EndPaint( hWnd, &ps );
 					return 1;
 					break;
