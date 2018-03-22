@@ -9,15 +9,19 @@
 
 class EasyWindowWin32 : public EasyWindow
 {
-	const char* const c_pClassName = "EasyWindowWin32";
+	static const char* const c_pClassName;
 public:
 	EasyWindowWin32(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent, EWindowStyle eStyle, EWindowFlags eFlags)
 		: m_bSizing(false)
 		, m_eCursor(EasyWindow::E_CURSOR_ARROW)
-		, m_bKeyDownAlt{ false, false }
-		, m_bKeyDownCtrl{ false, false }
-		, m_bKeyDownShift{ false, false }
 	{
+		m_bKeyDownAlt[0] = false;
+		m_bKeyDownAlt[1] = false;
+		m_bKeyDownCtrl[0] = false;
+		m_bKeyDownCtrl[1] = false;
+		m_bKeyDownShift[0] = false;
+		m_bKeyDownShift[1] = false;
+
 		if (!s_bClassInitialized)
 		{
 			s_bClassInitialized = true;
@@ -725,6 +729,8 @@ protected:
 		return DefWindowProc(hWnd, iMsg, wParam, lParam);
 	}
 };
+
+const char* const EasyWindowWin32::c_pClassName = "EasyWindowWin32";
 
 bool EasyWindowWin32::s_bClassInitialized = false;
 EasyWindowWin32::EKey EasyWindowWin32::s_iTranslateKeys[c_iMaxKeys];
