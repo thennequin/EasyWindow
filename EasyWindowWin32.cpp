@@ -167,6 +167,8 @@ public:
 
 		m_bCatchAlt = (eFlags & E_FLAG_CATCH_ALT_KEY) != 0;
 
+		m_bCaptureMouseOnClick = ( eFlags & E_FLAG_ALWAYS_CAPTURE_MOUSE_ON_CLICK ) != 0;
+
 		RECT wr = { 0, 0, iWidth, iHeight };
 		if (bClientSize)
 		{
@@ -388,6 +390,7 @@ protected:
 	bool							m_bKeyDownAlt[2];
 	bool							m_bKeyDownCtrl[2];
 	bool							m_bKeyDownShift[2];
+	bool							m_bCaptureMouseOnClick;
 
 	static bool						s_bClassInitialized;
 	static const int				c_iMaxKeys = 256;
@@ -431,7 +434,11 @@ protected:
 				break;
 			case WM_LBUTTONDOWN:
 				if (!pThis->m_bSizing)
+				{
+					if (pThis->m_bCaptureMouseOnClick)
+						SetCapture(hWnd);
 					pThis->OnMouseButton(0, true);
+				}
 				break;
 			case WM_LBUTTONUP:
 				if (pThis->m_bSizing)
@@ -441,6 +448,8 @@ protected:
 				}
 				else
 				{
+					if (pThis->m_bCaptureMouseOnClick)
+						ReleaseCapture();
 					pThis->OnMouseButton(0, false);
 				}
 				break;
