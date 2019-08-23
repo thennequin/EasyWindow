@@ -12,7 +12,7 @@ Only work on Windows actually (need an Linux and MacOS support) and not stable e
 Include files in you project:
  * EasyWindow.h
  * EasyWindow.cpp
- * EasyWindowWin32.h
+ * EasyWindowWin32.cpp
  
  
 EasyWindow allow you to create a window in 3 lines
