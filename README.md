@@ -11,7 +11,7 @@ Only work on Windows actually (need an Linux and MacOS support) and not stable e
 ## How to use
 Include files in you project:
  * EasyWindow.h
- * EasyWindow.h
+ * EasyWindow.cpp
  * EasyWindowWin32.h
  
  
