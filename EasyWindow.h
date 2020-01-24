@@ -57,7 +57,7 @@ public:
 	class FunctionCallerOneArg : public CallerOneArg<T1, R>
 	{
 	public:
-		FunctionCallerOneArg(R(*pFunctionPtr)(const T1&))
+		FunctionCallerOneArg(R(*pFunctionPtr)(T1))
 		{
 			m_pFunctionPtr = pFunctionPtr;
 		}
@@ -226,7 +226,7 @@ public:
 		void							Set(R(*pFuncPtr)(T1, T2))
 		{
 			if (0 != m_pCaller) delete m_pCaller;
-			m_pCaller = new FunctionCaller(pFuncPtr);
+			m_pCaller = new FunctionCallerTwoArg<T1, T2, R>(pFuncPtr);
 		}
 
 		template<typename C>
