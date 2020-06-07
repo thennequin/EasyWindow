@@ -219,6 +219,9 @@ public:
 
 	virtual bool					Update() EW_OVERRIDE
 	{
+		if (IsWindow(m_pHandle) == FALSE)
+			return false;
+
 		MSG oMsg;
 		int iCount = 0;
 		m_iLastEvents = 0;
