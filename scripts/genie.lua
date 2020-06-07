@@ -20,6 +20,8 @@ solution "EasyWindow"
 		includedirs {
 							".."
 		}
+		
+		flags				"ExtraWarnings"
 
 		platforms{}
 
