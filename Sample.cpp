@@ -36,7 +36,13 @@ int main()
 	pWindow->Show();
 	pWindow->SetCursor(EasyWindow::E_CURSOR_HAND);
 
-	while (pWindow->Update());
+	while (pWindow->Update())
+	{
+		if ((pWindow->GetLastEvents() & EasyWindow::E_EVENT_SIZED) != 0)
+		{
+			printf("Updated size\n");
+		}
+	}
 
 	return 0;
 }

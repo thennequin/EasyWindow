@@ -362,10 +362,10 @@ public:
 	enum EWindowFlag
 	{
 		E_FLAG_NONE								= 0,
-		E_FLAG_OWN_DC							= (1<<0),
-		E_FLAG_ACCEPT_FILES_DROP				= (1<<1),
-		E_FLAG_CATCH_ALT_KEY					= (1<<2),
-		E_FLAG_ALWAYS_CAPTURE_MOUSE_ON_CLICK	= (1<<3)
+		E_FLAG_OWN_DC							= (1 << 0),
+		E_FLAG_ACCEPT_FILES_DROP				= (1 << 1),
+		E_FLAG_CATCH_ALT_KEY					= (1 << 2),
+		E_FLAG_ALWAYS_CAPTURE_MOUSE_ON_CLICK	= (1 << 3)
 	};
 	typedef int EWindowFlags;
 
@@ -380,6 +380,29 @@ public:
 		E_CURSOR_RESIZE_NESW,
 		E_CURSOR_RESIZE_NWSE
 	};
+
+	enum EEventFlag
+	{
+		E_EVENT_NONE							= 0,
+		E_EVENT_CLOSED							= (1 << 0),
+		E_EVENT_MOVED							= (1 << 1),
+		E_EVENT_SIZED							= (1 << 2),
+		E_EVENT_MAXIMIZED						= (1 << 3),
+		E_EVENT_MINIMIZED						= (1 << 4),
+		E_EVENT_RESTORED						= (1 << 5),
+		E_EVENT_FOCUSED							= (1 << 6),
+		E_EVENT_UNFOCUSED						= (1 << 7),
+		E_EVENT_MOUSE_MOVED						= (1 << 8),
+		E_EVENT_MOUSE_WHEEL						= (1 << 9),
+		E_EVENT_MOUSE_BUTTON_DOWN				= (1 << 10),
+		E_EVENT_MOUSE_BUTTON_UP					= (1 << 11),
+		E_EVENT_KEY_DOWN						= (1 << 12),
+		E_EVENT_KEY_UP							= (1 << 13),
+		E_EVENT_CHAR							= (1 << 14),
+		E_EVENT_FILES_DROPPED					= (1 << 15),
+		E_EVENT_PAINT							= (1 << 16)
+	};
+	typedef unsigned long EEventFlags;
 
 	struct Point
 	{
@@ -406,11 +429,12 @@ public:
 	// Members
 
 	virtual								~EasyWindow() {};
-		
+
 	virtual bool						Update() = 0;
+	virtual EEventFlags					GetLastEvents() = 0;
 
 	virtual void						Show(bool bShow = true) = 0;
-	
+
 	virtual bool						IsFocused() const = 0;
 	virtual void						SetFocused() = 0;
 

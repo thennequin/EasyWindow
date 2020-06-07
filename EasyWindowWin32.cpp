@@ -22,6 +22,8 @@ public:
 		m_bKeyDownShift[0] = false;
 		m_bKeyDownShift[1] = false;
 
+		m_iLastEvents = 0;
+
 		if (!s_bClassInitialized)
 		{
 			s_bClassInitialized = true;
@@ -139,7 +141,7 @@ public:
 
 		DWORD iWindowStyle = WS_OVERLAPPEDWINDOW; // E_NORMAL
 		DWORD iWindowExStyle = 0;
-		
+
 		if (eStyle == E_STYLE_BORDERLESS)
 		{
 			iWindowStyle = WS_OVERLAPPED | WS_SYSMENU;
@@ -219,6 +221,7 @@ public:
 	{
 		MSG oMsg;
 		int iCount = 0;
+		m_iLastEvents = 0;
 		while (iCount < 10 && PeekMessage(&oMsg, m_pHandle, 0, 0, PM_NOREMOVE)) // Max 10 messages
 		{
 			if (GetMessage(&oMsg, m_pHandle, 0, 0))
@@ -233,6 +236,10 @@ public:
 		return true;
 	}
 
+	virtual EEventFlags				GetLastEvents()
+	{
+		return m_iLastEvents;
+	}
 
 	virtual void					Show(bool bShow) EW_OVERRIDE
 	{
@@ -391,7 +398,7 @@ protected:
 	bool							m_bKeyDownCtrl[2];
 	bool							m_bKeyDownShift[2];
 	bool							m_bCaptureMouseOnClick;
-
+	EEventFlags						m_iLastEvents;
 	static bool						s_bClassInitialized;
 	static const int				c_iMaxKeys = 256;
 	static EKey						s_iTranslateKeys[c_iMaxKeys];
@@ -409,6 +416,7 @@ protected:
 				break;
 			case WM_PAINT:
 				{
+					pThis->m_iLastEvents |= E_EVENT_PAINT;
 					PAINTSTRUCT	ps;
 					BeginPaint( hWnd, &ps );
 					EndPaint( hWnd, &ps );
@@ -419,22 +427,27 @@ protected:
 				//return 0;
 				break;
 			case WM_SIZE:
+				pThis->m_iLastEvents |= E_EVENT_SIZED;
 				pThis->OnSize(pThis, LOWORD(lParam), HIWORD(lParam));
 				break;
 			case WM_MOVE:
+				pThis->m_iLastEvents |= E_EVENT_MOVED;
 				pThis->OnMove(pThis, LOWORD(lParam), HIWORD(lParam));
 				break;
 			case WM_SETFOCUS:
 			case WM_KILLFOCUS:
+				pThis->m_iLastEvents |= pThis->IsFocused() ? E_EVENT_FOCUSED : E_EVENT_UNFOCUSED;
 				pThis->OnFocus(pThis, pThis->IsFocused());
 				break;
 			case WM_CLOSE:
+				pThis->m_iLastEvents |= E_EVENT_CLOSED;
 				if (pThis->OnClose(pThis))
 					return 1;
 				break;
 			case WM_LBUTTONDOWN:
 				if (!pThis->m_bSizing)
 				{
+					pThis->m_iLastEvents |= E_EVENT_MOUSE_BUTTON_DOWN;
 					if (pThis->m_bCaptureMouseOnClick)
 						SetCapture(hWnd);
 					pThis->OnMouseButton(pThis, 0, true);
@@ -448,27 +461,34 @@ protected:
 				}
 				else
 				{
+					pThis->m_iLastEvents |= E_EVENT_MOUSE_BUTTON_UP;
 					if (pThis->m_bCaptureMouseOnClick)
 						ReleaseCapture();
 					pThis->OnMouseButton(pThis, 0, false);
 				}
 				break;
 			case WM_RBUTTONDOWN:
+				pThis->m_iLastEvents |= E_EVENT_MOUSE_BUTTON_DOWN;
 				pThis->OnMouseButton(pThis, 1, true);
 				break;
 			case WM_RBUTTONUP:
+				pThis->m_iLastEvents |= E_EVENT_MOUSE_BUTTON_UP;
 				pThis->OnMouseButton(pThis, 1, false);
 				break;
 			case WM_MBUTTONDOWN:
+				pThis->m_iLastEvents |= E_EVENT_MOUSE_BUTTON_DOWN;
 				pThis->OnMouseButton(pThis, 2, true);
 				break;
 			case WM_MBUTTONUP:
+				pThis->m_iLastEvents |= E_EVENT_MOUSE_BUTTON_UP;
 				pThis->OnMouseButton(pThis, 2, false);
 				break;
 			case WM_XBUTTONDOWN:
+				pThis->m_iLastEvents |= E_EVENT_MOUSE_BUTTON_DOWN;
 				pThis->OnMouseButton(pThis, 3 + GET_XBUTTON_WPARAM(wParam), false);
 				break;
 			case WM_XBUTTONUP:
+				pThis->m_iLastEvents |= E_EVENT_MOUSE_BUTTON_UP;
 				pThis->OnMouseButton(pThis, 3 + GET_XBUTTON_WPARAM(wParam), false);
 				break;
 			case WM_MOUSEMOVE:
@@ -524,10 +544,12 @@ protected:
 				}
 				else
 				{
+					pThis->m_iLastEvents |= E_EVENT_MOUSE_MOVED;
 					pThis->OnMouseMove(pThis, (signed short)(lParam), (signed short)(lParam >> 16));
 				}
 				break;
 			case WM_MOUSEWHEEL:
+				pThis->m_iLastEvents |= E_EVENT_MOUSE_WHEEL;
 				pThis->OnMouseWheel(pThis, GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
 				break;
 			case WM_SYSKEYDOWN:
@@ -540,6 +562,8 @@ protected:
 				bool bDown = (iMsg == WM_SYSKEYDOWN) || (iMsg == WM_KEYDOWN);
 				if (wParam >= 0 && wParam < c_iMaxKeys && (bDown == false || (HIWORD(lParam) & KF_REPEAT) == 0))
 				{
+					pThis->m_iLastEvents |= bDown ? E_EVENT_KEY_DOWN : E_EVENT_KEY_UP;
+
 					EKey eKey = (EKey)s_iTranslateKeys[wParam];
 
 					if (wParam == VK_SHIFT)
@@ -589,6 +613,7 @@ protected:
 				break;
 			}
 			case WM_CHAR:
+				pThis->m_iLastEvents |= E_EVENT_CHAR;
 				pThis->OnChar(pThis, wParam);
 				break;
 
@@ -702,6 +727,7 @@ protected:
 				break;
 			case WM_DROPFILES:
 				{
+					pThis->m_iLastEvents |= E_EVENT_FILES_DROPPED;
 					HDROP hDrop = (HDROP)wParam;
 
 					int iFileCount = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
