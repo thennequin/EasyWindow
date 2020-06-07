@@ -122,7 +122,7 @@ public:
 	class InstanceCallerTwoArg : public CallerTwoArg<T1, T2, R>
 	{
 	public:
-		InstanceCallerTwoArg(C* pThis, R(C::*pMemberPtr)(T1, T2))
+		InstanceCallerTwoArg(C* pThis, R(C::*pMemberPtr)(const EasyWindow*, T1, T2))
 		{
 			m_pThis = pThis;
 			m_pMemberPtr = pMemberPtr;
