@@ -3,24 +3,24 @@
 
 #include <stdio.h>
 
-void OnSize(int iW, int iH)
+void OnSize(const EasyWindow* /*pWindow*/, int iW, int iH)
 {
 	printf("OnSize %d %d\n", iW, iH);
 }
 
-bool OnClose()
+bool OnClose(const EasyWindow* /*pWindow*/)
 {
 	printf("OnClose\n");
 	static int s_iCloseCount = 0;
 	return s_iCloseCount++ < 3;
 }
 
-void OnChar(int iChar)
+void OnChar(const EasyWindow* /*pWindow*/, int iChar)
 {
 	printf("OnChar %c\n", iChar);
 }
 
-void OnKey(EasyWindow::EKey eKey, bool bDown)
+void OnKey(const EasyWindow* /*pWindow*/, EasyWindow::EKey eKey, bool bDown)
 {
 	printf("OnKey %s %d %s\n", bDown ? "down" : "up", eKey, EasyWindow::KeyToString(eKey));
 }
@@ -35,7 +35,7 @@ int main()
 	pWindow->OnChar.Set(&OnChar);
 	pWindow->Show();
 	pWindow->SetCursor(EasyWindow::E_CURSOR_HAND);
-	
+
 	while (pWindow->Update());
 
 	return 0;

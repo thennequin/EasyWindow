@@ -419,17 +419,17 @@ protected:
 				//return 0;
 				break;
 			case WM_SIZE:
-				pThis->OnSize(LOWORD(lParam), HIWORD(lParam));
+				pThis->OnSize(pThis, LOWORD(lParam), HIWORD(lParam));
 				break;
 			case WM_MOVE:
-				pThis->OnMove(LOWORD(lParam), HIWORD(lParam));
+				pThis->OnMove(pThis, LOWORD(lParam), HIWORD(lParam));
 				break;
 			case WM_SETFOCUS:
 			case WM_KILLFOCUS:
-				pThis->OnFocus(pThis->IsFocused());
+				pThis->OnFocus(pThis, pThis->IsFocused());
 				break;
 			case WM_CLOSE:
-				if (pThis->OnClose())
+				if (pThis->OnClose(pThis))
 					return 1;
 				break;
 			case WM_LBUTTONDOWN:
@@ -437,7 +437,7 @@ protected:
 				{
 					if (pThis->m_bCaptureMouseOnClick)
 						SetCapture(hWnd);
-					pThis->OnMouseButton(0, true);
+					pThis->OnMouseButton(pThis, 0, true);
 				}
 				break;
 			case WM_LBUTTONUP:
@@ -450,26 +450,26 @@ protected:
 				{
 					if (pThis->m_bCaptureMouseOnClick)
 						ReleaseCapture();
-					pThis->OnMouseButton(0, false);
+					pThis->OnMouseButton(pThis, 0, false);
 				}
 				break;
 			case WM_RBUTTONDOWN:
-				pThis->OnMouseButton(1, true);
+				pThis->OnMouseButton(pThis, 1, true);
 				break;
 			case WM_RBUTTONUP:
-				pThis->OnMouseButton(1, false);
+				pThis->OnMouseButton(pThis, 1, false);
 				break;
 			case WM_MBUTTONDOWN:
-				pThis->OnMouseButton(2, true);
+				pThis->OnMouseButton(pThis, 2, true);
 				break;
 			case WM_MBUTTONUP:
-				pThis->OnMouseButton(2, false);
+				pThis->OnMouseButton(pThis, 2, false);
 				break;
 			case WM_XBUTTONDOWN:
-				pThis->OnMouseButton(3 + GET_XBUTTON_WPARAM(wParam), false);
+				pThis->OnMouseButton(pThis, 3 + GET_XBUTTON_WPARAM(wParam), false);
 				break;
 			case WM_XBUTTONUP:
-				pThis->OnMouseButton(3 + GET_XBUTTON_WPARAM(wParam), false);
+				pThis->OnMouseButton(pThis, 3 + GET_XBUTTON_WPARAM(wParam), false);
 				break;
 			case WM_MOUSEMOVE:
 				/*if (!m_bMouseTracking)
@@ -524,11 +524,11 @@ protected:
 				}
 				else
 				{
-					pThis->OnMouseMove((signed short)(lParam), (signed short)(lParam >> 16));
+					pThis->OnMouseMove(pThis, (signed short)(lParam), (signed short)(lParam >> 16));
 				}
 				break;
 			case WM_MOUSEWHEEL:
-				pThis->OnMouseWheel(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
+				pThis->OnMouseWheel(pThis, GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
 				break;
 			case WM_SYSKEYDOWN:
 			case WM_SYSKEYUP:
@@ -545,7 +545,7 @@ protected:
 					if (wParam == VK_SHIFT)
 					{
 						if (bDown && pThis->m_bKeyDownShift[0] != bDown && pThis->m_bKeyDownShift[1] != bDown)
-							pThis->OnKey(KEY_SHIFT, bDown);
+							pThis->OnKey(pThis, KEY_SHIFT, bDown);
 
 						UINT iScancode = (lParam & 0x00ff0000) >> 16;
 						UINT iNewVK = MapVirtualKey(iScancode, MAPVK_VSC_TO_VK_EX);
@@ -554,12 +554,12 @@ protected:
 						pThis->m_bKeyDownShift[(int)(eKey == KEY_RIGHTSHIFT)] = bDown;
 
 						if (!bDown && pThis->m_bKeyDownShift[0] == bDown && pThis->m_bKeyDownShift[1] == bDown)
-							pThis->OnKey(KEY_SHIFT, bDown);
+							pThis->OnKey(pThis, KEY_SHIFT, bDown);
 					}
 					else if (wParam == VK_CONTROL)
 					{
 						if (bDown && pThis->m_bKeyDownCtrl[0] != bDown && pThis->m_bKeyDownCtrl[1] != bDown)
-							pThis->OnKey(KEY_CTRL, bDown);
+							pThis->OnKey(pThis, KEY_CTRL, bDown);
 
 						bool bExtended = (HIWORD(lParam) & KF_EXTENDED) != 0;
 						eKey = bExtended ? KEY_RIGHTCTRL : KEY_LEFTCTRL;
@@ -567,12 +567,12 @@ protected:
 						pThis->m_bKeyDownCtrl[(int)(eKey == KEY_RIGHTCTRL)] = bDown;
 
 						if (!bDown && pThis->m_bKeyDownCtrl[0] == bDown && pThis->m_bKeyDownCtrl[1] == bDown)
-							pThis->OnKey(KEY_CTRL, bDown);
+							pThis->OnKey(pThis, KEY_CTRL, bDown);
 					}
 					else if (wParam == VK_MENU)
 					{
 						if (bDown && pThis->m_bKeyDownAlt[0] != bDown && pThis->m_bKeyDownAlt[1] != bDown)
-							pThis->OnKey(KEY_ALT, bDown);
+							pThis->OnKey(pThis, KEY_ALT, bDown);
 
 						bool bExtended = (HIWORD(lParam) & KF_EXTENDED) != 0;
 						eKey = bExtended ? KEY_RIGHTALT : KEY_LEFTALT;
@@ -580,16 +580,16 @@ protected:
 						pThis->m_bKeyDownAlt[(int)(eKey == KEY_RIGHTALT)] = bDown;
 
 						if (!bDown && pThis->m_bKeyDownAlt[0] == bDown && pThis->m_bKeyDownAlt[1] == bDown)
-							pThis->OnKey(KEY_ALT, bDown);
+							pThis->OnKey(pThis, KEY_ALT, bDown);
 					}
 
-					pThis->OnKey(eKey, bDown);
+					pThis->OnKey(pThis, eKey, bDown);
 				}
 				return 1;
 				break;
 			}
 			case WM_CHAR:
-				pThis->OnChar(wParam);
+				pThis->OnChar(pThis, wParam);
 				break;
 
 			case WM_NCCALCSIZE:
@@ -703,7 +703,7 @@ protected:
 			case WM_DROPFILES:
 				{
 					HDROP hDrop = (HDROP)wParam;
-					
+
 					int iFileCount = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
 					char** pFiles = (char**)malloc(sizeof(char**) * iFileCount);
 					for (int i = 0; i < iFileCount; ++i)
@@ -723,7 +723,7 @@ protected:
 					oFiles.oPosition.x = oDropPoint.x;
 					oFiles.oPosition.y = oDropPoint.y;
 
-					pThis->OnDropFiles(oFiles);
+					pThis->OnDropFiles(pThis, oFiles);
 
 					for (int i = 0; i < iFileCount; ++i)
 					{
