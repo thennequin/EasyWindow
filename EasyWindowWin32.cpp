@@ -641,26 +641,30 @@ protected:
 					const RECT& oBorder = pThis->m_oBorderThickness;
 
 					GetWindowRect(pThis->m_pHandle, &oWindowRect);
-					int x = LOWORD(lParam) - oWindowRect.left;
-					int y = HIWORD(lParam) - oWindowRect.top;
+
+					// Cast DWORD to short to recover signed value
+					int iAbsoluteX = (short)LOWORD(lParam);
+					int iAbsoluteY = (short)HIWORD(lParam);
+					int iX = iAbsoluteX - oWindowRect.left;
+					int iY = iAbsoluteY - oWindowRect.top;
 
 					//return HTCLIENT;
 
-					if (x < oBorder.left && y < oBorder.top)
+					if (iX < oBorder.left && iY < oBorder.top)
 						return HTTOPLEFT;
-					else if (x > oWindowRect.right - oWindowRect.left - oBorder.right && y < oBorder.top)
+					else if (iX > oWindowRect.right - oWindowRect.left - oBorder.right && iY < oBorder.top)
 						return HTTOPRIGHT;
-					else if (x > oWindowRect.right - oWindowRect.left - oBorder.right && y > oWindowRect.bottom - oWindowRect.top - oBorder.bottom)
+					else if (iX > oWindowRect.right - oWindowRect.left - oBorder.right && iY > oWindowRect.bottom - oWindowRect.top - oBorder.bottom)
 						return HTBOTTOMRIGHT;
-					else if (x < oBorder.left && y > oWindowRect.bottom - oWindowRect.top - oBorder.bottom)
+					else if (iX < oBorder.left && iY > oWindowRect.bottom - oWindowRect.top - oBorder.bottom)
 						return HTBOTTOMLEFT;
-					else if (x < oBorder.left)
+					else if (iX < oBorder.left)
 						return HTLEFT;
-					else if (y < oBorder.top)
+					else if (iY < oBorder.top)
 						return HTTOP;
-					else if (x > oWindowRect.right - oWindowRect.left - oBorder.right)
+					else if (iX > oWindowRect.right - oWindowRect.left - oBorder.right)
 						return HTRIGHT;
-					else if (y > oWindowRect.bottom - oWindowRect.top - oBorder.bottom)
+					else if (iY > oWindowRect.bottom - oWindowRect.top - oBorder.bottom)
 						return HTBOTTOM;
 					//else if (x >= m_oCaptionArea.left && x <= m_oCaptionArea.right && y >= m_oCaptionArea.top && y <= m_oCaptionArea.bottom)
 						//return HTCAPTION;
