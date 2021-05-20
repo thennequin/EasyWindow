@@ -215,6 +215,8 @@ public:
 	{
 		if (m_pHandle != NULL)
 		{
+			SetWindowLongPtr(m_pHandle, GWLP_USERDATA, (LONG_PTR)NULL);
+
 			bool bIsActive = GetActiveWindow() == m_pHandle;
 			HWND hOwner = GetWindow(m_pHandle, GW_OWNER);
 
