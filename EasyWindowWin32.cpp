@@ -214,7 +214,18 @@ public:
 	virtual							~EasyWindowWin32()
 	{
 		if (m_pHandle != NULL)
+		{
+			bool bIsActive = GetActiveWindow() == m_pHandle;
+			HWND hOwner = GetWindow(m_pHandle, GW_OWNER);
+
 			DestroyWindow(m_pHandle);
+
+			if (bIsActive && hOwner != NULL)
+			{
+				// HACK : Force active window because on destroy the owner window can be moved in background 
+				SetActiveWindow(hOwner);
+			}
+		}
 	}
 
 	virtual bool					Update() EW_OVERRIDE
