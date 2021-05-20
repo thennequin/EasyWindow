@@ -451,9 +451,12 @@ protected:
 				pThis->OnMove(pThis, LOWORD(lParam), HIWORD(lParam));
 				break;
 			case WM_SETFOCUS:
+				pThis->m_iLastEvents |= E_EVENT_FOCUSED;
+				pThis->OnFocus(pThis, true);
+				break;
 			case WM_KILLFOCUS:
-				pThis->m_iLastEvents |= pThis->IsFocused() ? E_EVENT_FOCUSED : E_EVENT_UNFOCUSED;
-				pThis->OnFocus(pThis, pThis->IsFocused());
+				pThis->m_iLastEvents |= E_EVENT_UNFOCUSED;
+				pThis->OnFocus(pThis, false);
 				break;
 			case WM_CLOSE:
 				pThis->m_iLastEvents |= E_EVENT_CLOSED;
