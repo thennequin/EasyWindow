@@ -199,6 +199,11 @@ public:
 				AdjustWindowRectEx(&m_oBorderThickness, iWindowStyle & ~WS_CAPTION, FALSE, NULL);
 				m_oBorderThickness.left *= -1;
 				m_oBorderThickness.top *= -1;
+
+				m_oBorderThickness.left += 1;
+				m_oBorderThickness.top += 1;
+				m_oBorderThickness.right += 1;
+				m_oBorderThickness.bottom += 1;
 			}
 			else if (iWindowStyle & WS_BORDER)
 			{
