@@ -509,11 +509,11 @@ protected:
 				break;
 			case WM_XBUTTONDOWN:
 				pThis->m_iLastEvents |= E_EVENT_MOUSE_BUTTON_DOWN;
-				pThis->OnMouseButton(pThis, 3 + GET_XBUTTON_WPARAM(wParam), true);
+				pThis->OnMouseButton(pThis, 2 + GET_XBUTTON_WPARAM(wParam), true);
 				break;
 			case WM_XBUTTONUP:
 				pThis->m_iLastEvents |= E_EVENT_MOUSE_BUTTON_UP;
-				pThis->OnMouseButton(pThis, 3 + GET_XBUTTON_WPARAM(wParam), false);
+				pThis->OnMouseButton(pThis, 2 + GET_XBUTTON_WPARAM(wParam), false);
 				break;
 			case WM_MOUSEMOVE:
 				/*if (!m_bMouseTracking)
