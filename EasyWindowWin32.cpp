@@ -165,6 +165,7 @@ public:
 			iWindowExStyle |= WS_EX_ACCEPTFILES;
 		}
 
+		m_bBorderless = eStyle == E_STYLE_BORDERLESS || eStyle == E_STYLE_BORDERLESS_RESIZABLE;
 		m_bManualSizing = eStyle == E_STYLE_BORDERLESS_RESIZABLE;
 
 		m_bCatchAlt = (eFlags & E_FLAG_CATCH_ALT_KEY) != 0;
@@ -280,7 +281,7 @@ public:
 	virtual void					SetSize(int iWidth, int iHeight, bool bClientSize) EW_OVERRIDE
 	{
 		RECT oRect = { 0, 0, iWidth, iHeight };
-		if (bClientSize)
+		if (bClientSize && m_bBorderless == false)
 		{
 			DWORD iWindowStyle = GetWindowLong(m_pHandle, GWL_STYLE);
 			AdjustWindowRect(&oRect, iWindowStyle, FALSE);
@@ -409,6 +410,7 @@ public:
 	}
 protected:
 	HWND							m_pHandle;
+	bool							m_bBorderless;
 	bool							m_bManualSizing;
 	RECT							m_oBorderThickness;
 	bool							m_bSizing;
