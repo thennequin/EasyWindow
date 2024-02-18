@@ -146,24 +146,42 @@ public:
 		}
 		~Callback()
 		{
-			if (0 != m_pCaller) delete m_pCaller;
+			if (0 != m_pCaller)
+				delete m_pCaller;
 		}
+
+		bool							IsSet() const
+		{
+			return m_pCaller != 0;
+		}
+
 		void							Set(R(*pFuncPtr)(const EasyWindow* pWindow))
 		{
-			if (0 != m_pCaller) delete m_pCaller;
-			m_pCaller = new FunctionCaller<R>(pFuncPtr);
+			if (0 != m_pCaller)
+				delete m_pCaller;
+
+			if (pFuncPtr != 0)
+				m_pCaller = new FunctionCaller<R>(pFuncPtr);
+			else
+				m_pCaller = 0;
 		}
 
 		template<typename C>
 		void							Set(C* pThis, R(C::*pMemberPtr)(const EasyWindow*))
 		{
-			if (0 != m_pCaller) delete m_pCaller;
-			m_pCaller = new InstanceCaller<C, R>(pThis, pMemberPtr);
+			if (0 != m_pCaller)
+				delete m_pCaller;
+
+			if (0 != pThis && 0 != pMemberPtr)
+				m_pCaller = new InstanceCaller<C, R>(pThis, pMemberPtr);
+			else
+				m_pCaller = 0;
 		}
 
 		R								operator()(const EasyWindow* pWindow)
 		{
-			if (0 != m_pCaller) return m_pCaller->Call(pWindow);
+			if (0 != m_pCaller)
+				return m_pCaller->Call(pWindow);
 			return R();
 		}
 	protected:
@@ -180,31 +198,53 @@ public:
 		}
 		~CallbackOneArg()
 		{
-			if (0 != m_pCaller) delete m_pCaller;
+			if (0 != m_pCaller)
+				delete m_pCaller;
 		}
+
+		bool							IsSet() const
+		{
+			return m_pCaller != 0;
+		}
+
 		void							Set(R(*pFuncPtr)(const EasyWindow*, T1))
 		{
-			if (0 != m_pCaller) delete m_pCaller;
-			m_pCaller = new FunctionCallerOneArg<T1, R>(pFuncPtr);
+			if (0 != m_pCaller)
+				delete m_pCaller;
+
+			if (pFuncPtr != 0)
+				m_pCaller = new FunctionCallerOneArg<T1, R>(pFuncPtr);
+			else
+				m_pCaller = 0;
 		}
 
 		template<typename C>
 		void							Set(C* pThis, R(C::*pMemberPtr)(const EasyWindow*, T1))
 		{
-			if (NULL != m_pCaller) delete m_pCaller;
-			m_pCaller = new InstanceCallerOneArg<C, T1, R>(pThis, pMemberPtr);
+			if (NULL != m_pCaller)
+				delete m_pCaller;
+			if (0 != pThis && 0 != pMemberPtr)
+				m_pCaller = new InstanceCallerOneArg<C, T1, R>(pThis, pMemberPtr);
+			else
+				m_pCaller = 0;
 		}
 
 		template<typename C>
 		void							Set(C* pThis, R(C::*pMemberPtrConstRef)(const EasyWindow*, const T1&))
 		{
-			if (NULL != m_pCaller) delete m_pCaller;
-			m_pCaller = new InstanceCallerOneArg<C, T1, R>(pThis, pMemberPtrConstRef);
+			if (NULL != m_pCaller)
+				delete m_pCaller;
+
+			if (0 != pThis && 0 != pMemberPtrConstRef)
+				m_pCaller = new InstanceCallerOneArg<C, T1, R>(pThis, pMemberPtrConstRef);
+			else
+				m_pCaller = 0;
 		}
 
 		R								operator()(const EasyWindow* pWindow, const T1& oT1)
 		{
-			if (0 != m_pCaller) return m_pCaller->Call(pWindow, oT1);
+			if (0 != m_pCaller)
+				return m_pCaller->Call(pWindow, oT1);
 			return R();
 		}
 	protected:
@@ -221,24 +261,41 @@ public:
 		}
 		~CallbackTwoArg()
 		{
-			if (0 != m_pCaller) delete m_pCaller;
+			if (0 != m_pCaller)
+				delete m_pCaller;
 		}
+
+		bool							IsSet() const
+		{
+			return m_pCaller != 0;
+		}
+
 		void							Set(R(*pFuncPtr)(const EasyWindow*, T1, T2))
 		{
-			if (0 != m_pCaller) delete m_pCaller;
-			m_pCaller = new FunctionCallerTwoArg<T1, T2, R>(pFuncPtr);
+			if (0 != m_pCaller)
+				delete m_pCaller;
+			if (pFuncPtr != 0)
+				m_pCaller = new FunctionCallerTwoArg<T1, T2, R>(pFuncPtr);
+			else
+				m_pCaller = 0;
 		}
 
 		template<typename C>
 		void							Set(C* pThis, R(C::*pMemberPtr)(const EasyWindow*, T1, T2))
 		{
-			if (NULL != m_pCaller) delete m_pCaller;
-			m_pCaller = new InstanceCallerTwoArg<C, T1, T2, R>(pThis, pMemberPtr);
+			if (NULL != m_pCaller)
+				delete m_pCaller;
+
+			if (0 != pThis && 0 != pMemberPtr)
+				m_pCaller = new InstanceCallerTwoArg<C, T1, T2, R>(pThis, pMemberPtr);
+			else
+				m_pCaller = 0;
 		}
 
 		R								operator()(const EasyWindow* pWindow, const T1& oT1, const T2& oT2)
 		{
-			if (0 != m_pCaller) return m_pCaller->Call(pWindow, oT1, oT2);
+			if (0 != m_pCaller)
+				return m_pCaller->Call(pWindow, oT1, oT2);
 			return R();
 		}
 	protected:
