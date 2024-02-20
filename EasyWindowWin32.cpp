@@ -13,6 +13,7 @@ class EasyWindowWin32 : public EasyWindow
 public:
 	EasyWindowWin32(const char* pTitle, int iWidth, int iHeight, bool bClientSize, EasyWindow* pParent, EWindowStyle eStyle, EWindowFlags eFlags)
 		: m_bSizing(false)
+		, m_iActiveHitMousePosition(HTNOWHERE)
 		, m_eCursor(EasyWindow::E_CURSOR_ARROW)
 	{
 		m_bKeyDownAlt[0] = false;
@@ -230,7 +231,7 @@ public:
 
 			if (bIsActive && hOwner != NULL)
 			{
-				// HACK : Force active window because on destroy the owner window can be moved in background 
+				// HACK : Force active window because on destroy the owner window can be moved in background
 				SetActiveWindow(hOwner);
 			}
 		}
@@ -414,6 +415,7 @@ protected:
 	bool							m_bManualSizing;
 	RECT							m_oBorderThickness;
 	bool							m_bSizing;
+	WPARAM							m_iActiveHitMousePosition;
 	LONG_PTR						m_iSizingMode;
 	ECursor							m_eCursor;
 	bool							m_bCatchAlt;
@@ -518,6 +520,8 @@ protected:
 				pThis->OnMouseButton(pThis, 2 + GET_XBUTTON_WPARAM(wParam), false);
 				break;
 			case WM_MOUSEMOVE:
+			case WM_NCMOUSEMOVE:
+			{
 				/*if (!m_bMouseTracking)
 				{
 					TRACKMOUSEEVENT tme;
@@ -529,8 +533,10 @@ protected:
 						m_bMouseTracking = true;
 					}
 				}*/
+
 				POINT oCursorPos;
 				GetCursorPos(&oCursorPos);
+
 				if (pThis->m_bSizing)
 				{
 					RECT oRect;
@@ -571,9 +577,12 @@ protected:
 				else
 				{
 					pThis->m_iLastEvents |= E_EVENT_MOUSE_MOVED;
-					pThis->OnMouseMove(pThis, (signed short)(lParam), (signed short)(lParam >> 16));
+					POINT oTopLeft = { 0, 0 };
+					ClientToScreen(pThis->m_pHandle, &oTopLeft); // Convert top-left client position to screen position
+					pThis->OnMouseMove(pThis, oCursorPos.x - oTopLeft.x, oCursorPos.y - oTopLeft.y);
 				}
 				break;
+			}
 			case WM_MOUSEWHEEL:
 				pThis->m_iLastEvents |= E_EVENT_MOUSE_WHEEL;
 				pThis->OnMouseWheel(pThis, GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
@@ -658,6 +667,23 @@ protected:
 				}
 				break;
 			case WM_NCHITTEST:
+				if (pThis->m_bBorderless && pThis->BorderlessHoveredArea.IsSet())
+				{
+					switch (pThis->BorderlessHoveredArea(pThis, (signed short)lParam, (signed short)(lParam >> 16)))
+					{
+						break; case E_HOVEREDAREA_MENU:
+							return HTMENU;
+						break; case E_HOVEREDAREA_CAPTION:
+							return HTCAPTION;
+						break; case E_HOVEREDAREA_MINIMIZE:
+							return HTMINBUTTON;
+						break; case E_HOVEREDAREA_MAXIMIZE:
+							return HTMAXBUTTON;
+						break; case E_HOVEREDAREA_CLOSE:
+							return HTCLOSE;
+					}
+				}
+
 				if (pThis->m_bManualSizing)
 				{
 					RECT oWindowRect;
@@ -670,8 +696,6 @@ protected:
 					int iAbsoluteY = (short)HIWORD(lParam);
 					int iX = iAbsoluteX - oWindowRect.left;
 					int iY = iAbsoluteY - oWindowRect.top;
-
-					//return HTCLIENT;
 
 					if (iX < oBorder.left && iY < oBorder.top)
 						return HTTOPLEFT;
@@ -689,8 +713,6 @@ protected:
 						return HTRIGHT;
 					else if (iY > oWindowRect.bottom - oWindowRect.top - oBorder.bottom)
 						return HTBOTTOM;
-					//else if (x >= m_oCaptionArea.left && x <= m_oCaptionArea.right && y >= m_oCaptionArea.top && y <= m_oCaptionArea.bottom)
-						//return HTCAPTION;
 					else
 						return HTCLIENT;
 				}
@@ -714,14 +736,49 @@ protected:
 						return 0;
 					}
 				}
+
+				pThis->m_iActiveHitMousePosition = wParam;
+
+				if (pThis->m_bBorderless && (wParam == HTMINBUTTON || wParam == HTMAXBUTTON || wParam == HTCLOSE))
+				{
+					// Skip deafult system behaviour to skip buttons drawing in bordeless mode
+					return 0;
+				}
 				break;
 			case WM_NCLBUTTONUP:
+			{
 				if (pThis->m_bSizing)
 				{
 					ReleaseCapture();
 					pThis->m_bSizing = false;
 				}
+
+				WPARAM iActiveHitMousePotition = pThis->m_iActiveHitMousePosition;
+				pThis->m_iActiveHitMousePosition = HTNOWHERE;
+
+				// Self manage buttons
+				if (iActiveHitMousePotition == wParam)
+				{
+					if (wParam == HTMINBUTTON)
+					{
+						ShowWindow(hWnd, SW_MINIMIZE);
+						return 0;
+					}
+					else if (wParam == HTMAXBUTTON)
+					{
+						WINDOWPLACEMENT oWindowPlacement;
+						GetWindowPlacement(hWnd, &oWindowPlacement);
+						ShowWindow(hWnd, oWindowPlacement.showCmd == SW_MAXIMIZE ? SW_RESTORE : SW_MAXIMIZE);
+						return 0;
+					}
+					else if (wParam == HTCLOSE)
+					{
+						SendMessage(hWnd, WM_CLOSE, 0, 0);
+						return 0;
+					}
+				}
 				break;
+			}
 			case WM_SETCURSOR:
 				if (LOWORD(lParam) == HTCLIENT) // Inside window
 				{

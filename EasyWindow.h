@@ -461,6 +461,16 @@ public:
 	};
 	typedef unsigned long EEventFlags;
 
+	enum EHoveredArea
+	{
+		E_HOVEREDAREA_NONE,
+		E_HOVEREDAREA_MENU,
+		E_HOVEREDAREA_CAPTION,
+		E_HOVEREDAREA_MINIMIZE,
+		E_HOVEREDAREA_MAXIMIZE,
+		E_HOVEREDAREA_CLOSE
+	};
+
 	struct Point
 	{
 		int								x;
@@ -544,6 +554,9 @@ public:
 
 	/* int FileCount, char** Files */
 	CallbackOneArg<DropFiles, void>		OnDropFiles;
+
+
+	CallbackTwoArg<int, int, EHoveredArea>	BorderlessHoveredArea;
 };
 
 #endif //__EASY_WINDOW_H__
