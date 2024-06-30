@@ -15,9 +15,9 @@ bool OnClose(const EasyWindow* /*pWindow*/)
 	return s_iCloseCount++ < 3;
 }
 
-void OnChar(const EasyWindow* /*pWindow*/, int iChar)
+void OnChar(const EasyWindow* /*pWindow*/, unsigned long iChar)
 {
-	printf("OnChar %c\n", iChar);
+	printf("OnChar %c\n", (char)iChar);
 }
 
 void OnKey(const EasyWindow* /*pWindow*/, EasyWindow::EKey eKey, bool bDown)

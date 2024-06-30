@@ -553,7 +553,7 @@ public:
 	/* int Key, bool IsDown */
 	CallbackTwoArg<EKey, bool, void>	OnKey;
 	/* int Char */
-	CallbackOneArg<int, void>			OnChar;
+	CallbackOneArg<unsigned long, void>	OnChar;
 
 	/* int FileCount, char** Files */
 	CallbackOneArg<DropFiles, void>		OnDropFiles;

@@ -649,7 +649,7 @@ protected:
 			}
 			case WM_CHAR:
 				pThis->m_iLastEvents |= E_EVENT_CHAR;
-				pThis->OnChar(pThis, wParam);
+				pThis->OnChar(pThis, (unsigned long)wParam);
 				break;
 
 			case WM_NCCALCSIZE:
