@@ -585,7 +585,7 @@ protected:
 			}
 			case WM_MOUSEWHEEL:
 				pThis->m_iLastEvents |= E_EVENT_MOUSE_WHEEL;
-				pThis->OnMouseWheel(pThis, GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
+				pThis->OnMouseWheel(pThis, (float)GET_WHEEL_DELTA_WPARAM(wParam) / (float)WHEEL_DELTA);
 				break;
 			case WM_SYSKEYDOWN:
 			case WM_SYSKEYUP:
