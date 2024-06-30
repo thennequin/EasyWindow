@@ -10,6 +10,7 @@ public:
 	class Caller
 	{
 	public:
+		virtual ~Caller() {}
 		virtual R					Call(const EasyWindow* pWindow) = 0;
 	};
 
@@ -50,6 +51,7 @@ public:
 	class CallerOneArg
 	{
 	public:
+		virtual ~CallerOneArg() {}
 		virtual R					Call(const EasyWindow* pWindow, const T1& oT1) = 0;
 	};
 
@@ -100,6 +102,7 @@ public:
 	class CallerTwoArg
 	{
 	public:
+		virtual ~CallerTwoArg(){}
 		virtual R					Call(const EasyWindow* pWindow, const T1& oT1, const T2& oT2) = 0;
 	};
 
