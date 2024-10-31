@@ -259,7 +259,7 @@ public:
 		return true;
 	}
 
-	virtual EEventFlags				GetLastEvents()
+	virtual EEventFlags				GetLastEvents() EW_OVERRIDE
 	{
 		return m_iLastEvents;
 	}
@@ -400,7 +400,7 @@ public:
 		return (GetKeyState(VK_MENU) & 0x8000) != 0;
 	}
 
-	virtual bool						IsKeyShiftDown()
+	virtual bool						IsKeyShiftDown() EW_OVERRIDE
 	{
 		return (GetKeyState(VK_SHIFT) & 0x8000) != 0;
 	}
@@ -671,16 +671,18 @@ protected:
 				{
 					switch (pThis->BorderlessHoveredArea(pThis, (signed short)lParam, (signed short)(lParam >> 16)))
 					{
-						break; case E_HOVEREDAREA_MENU:
+						case E_HOVEREDAREA_MENU:
 							return HTMENU;
-						break; case E_HOVEREDAREA_CAPTION:
+						case E_HOVEREDAREA_CAPTION:
 							return HTCAPTION;
-						break; case E_HOVEREDAREA_MINIMIZE:
+						case E_HOVEREDAREA_MINIMIZE:
 							return HTMINBUTTON;
-						break; case E_HOVEREDAREA_MAXIMIZE:
+						case E_HOVEREDAREA_MAXIMIZE:
 							return HTMAXBUTTON;
-						break; case E_HOVEREDAREA_CLOSE:
+						case E_HOVEREDAREA_CLOSE:
 							return HTCLOSE;
+						case E_HOVEREDAREA_NONE:
+							break;
 					}
 				}
 
