@@ -1,6 +1,8 @@
 #ifndef __EASY_WINDOW_H__
 #define __EASY_WINDOW_H__
 
+#include <stddef.h> // NULL
+
 class EasyWindow
 {
 public:
