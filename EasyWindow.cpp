@@ -124,7 +124,7 @@ EasyWindow::EKey EasyWindow::StringToKey(const char* pString)
 	if (pString == 0)
 		return KEY_NONE;
 
-	for (int i = 1; i < sizeof(c_pKeyTable); ++i)
+	for (int i = 1; i < (int)(sizeof(c_pKeyTable) / sizeof(c_pKeyTable[0])); ++i)
 	{
 		if (_EasyWindowStricmp(pString, c_pKeyTable[i]) == 0)
 			return (EasyWindow::EKey)i;
